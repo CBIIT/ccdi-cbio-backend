@@ -1,21 +1,26 @@
-Fix # (see https://help.github.com/en/articles/closing-issues-using-keywords)
+# Pull Request Title
+<!-- Provide a short summary of the changes in this pull request -->
 
-Describe changes proposed in this pull request:
-- a
-- b
+## Description
+<!-- Describe your changes in detail -->
+- What problem does this solve?
 
-# Checks
-- [ ] The commit log is comprehensible. It follows [7 rules of great commit messages](http://chris.beams.io/posts/git-commit/). We can fix this during merge by using a squash+merge if necessary
-- [ ] Has tests or has a separate issue that describes the types of test that should be created. If no test is included it should explicitly be mentioned in the PR why there is no test.
-- [ ] Is this PR adding logic based on one or more **clinical** attributes? If yes, please make sure validation for this attribute is also present in the data validation / data loading layers (in backend repo) and documented in [File-Formats Clinical data section](https://github.com/cBioPortal/cbioportal/blob/master/docs/File-Formats.md#clinical-data)!
-- [ ] Make sure your PR has one of the labels defined in https://github.com/cBioPortal/cbioportal/blob/master/.github/release-drafter.yml
 
-# Any screenshots or GIFs?
-If this is a new visual feature please add a before/after screenshot or gif
-here with e.g. [Giphy CAPTURE](https://giphy.com/apps/giphycapture) or [Peek](https://github.com/phw/peek)
+## Type of Change
+<!-- Please delete options that are not relevant -->
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] Feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+- [ ] Refactoring (non-functional changes, code improvements)
 
-# Notify reviewers
-Read our [Pull request merging
-policy](../CONTRIBUTING.md#pull-request-merging-policy). It can help to figure out who worked on the
-file before you. Please use `git blame <filename>` to determine that
-and notify them either through slack or by assigning them as a reviewer on the PR
+## Related Issue(s)
+<!-- List the issues this pull request resolves -->
+- Fixes #<issue_number>
+- Related to #<issue_number>
+
+## Screenshots or Demo (if applicable)
+<!-- Attach screenshots or a short demo to highlight the changes -->
+
+## Additional Notes
+<!-- Add any additional information, context, or questions here -->

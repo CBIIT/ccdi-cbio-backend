@@ -39,7 +39,7 @@ server.compression.enabled=true
 # db.tomcat_resource_name=jdbc/cbioportal
 
 # web page cosmetics
-skin.title=cBioPortal for Cancer Genomics
+skin.title=CCDI cBioPortal
 skin.email_contact=cbioportal at googlegroups dot com
 skin.authorization_message=Access to this portal is only available to authorized users at Memorial Sloan Kettering Cancer Center.  [<a href="http://bit.ly/ZevaHa">Request Access</a>].
 skin.example_study_queries=tcga\ntcga -provisional\ntcga -moratorium\ntcga OR icgc\n-"cell line"\nprostate mskcc\nesophageal OR stomach\nserous\nbreast

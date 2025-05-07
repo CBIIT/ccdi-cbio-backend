@@ -58,7 +58,8 @@ RUN find /core/scripts/ -type f -executable \! -name '*.pl' -print0 | xargs -0 -
 
 # put config files in this folder if you want to override config
 ENV PORTAL_WEB_HOME=/cbioportal-webapp
-ENV PORTAL_HOME=/cbioportal
+# ENV PORTAL_HOME=/cbioportal
+ENV PORTAL_HOME=/cbioportal-webapp
 ENV JAVA_OPTS="-Xms2G -Xmx8G"
 ENV WEBAPP_OPTS=
 
@@ -71,9 +72,11 @@ COPY --from=build ${DEPENDENCY}/META-INF                    $PORTAL_WEB_HOME/MET
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes             $PORTAL_WEB_HOME/
 
 # add entrypoint
-2# COPY --from=build /cbioportal/docker/web-and-data/docker-entrypoint.sh /usr/local/bin/
-# ENTRYPOINT ["docker-entrypoint.sh"]
+COPY --from=build /cbioportal/docker/web-and-data/docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["docker-entrypoint.sh"]
 # CMD ["sh", "-c", "java $(echo $JAVA_OPTS) -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication $(echo $WEBAPP_OPTS)"]
 
-
-CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.datasource.url=$DB_URL --spring.datasource.username=$DB_USERNAME --spring.datasource.password=$DB_PASSWORD --session.service.url=$SESSION_URL"]
+# CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.datasource.url=$DB_URL --spring.datasource.username=$DB_USERNAME --spring.datasource.password=$DB_PASSWORD --session.service.url=$SESSION_URL"]
+# CMD ["sh", "-c", "exec java $JAVA_OPTS org.cbioportal.PortalApplication --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --session.service.url=${SESSION_URL}"]
+CMD ["sh", "-c", "exec java $JAVA_OPTS org.cbioportal.PortalApplication $(echo $WEBAPP_OPTS)"]

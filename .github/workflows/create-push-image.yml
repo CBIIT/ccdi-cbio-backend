@@ -33,9 +33,13 @@ jobs:
                 aws-region: ${{ secrets.AWS_REGION }}
                 role-session-name: ${{ github.actor }}
 
+          
+          - name: Download properties files from S3 to src/main/resources/
+            run: |
+                aws s3 cp s3://cbio-nonprod-backend-configs/application.properties src/main/resources/application.properties
+
           - name: Rename properties files
             run: |
-                mv src/main/resources/application.properties.EXAMPLE src/main/resources/application.properties
                 mv src/main/resources/log4j.properties.EXAMPLE src/main/resources/log4j.properties
                 mv src/main/resources/security.properties.EXAMPLE src/main/resources/security.properties
 

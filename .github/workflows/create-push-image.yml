@@ -71,7 +71,7 @@ jobs:
                 docker buildx build --no-cache --output type=docker --platform linux/amd64 -t ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} -f docker/web-and-data/Dockerfile .
                 
                 ##### PULL IMAGE FROM CACHE SO IT IS LOCALLY ACCESSIBLE
-                docker image pull ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+                #docker image pull ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
 
           ##### DEBUG: LISTING IMAGES
           - name: List Docker images

@@ -68,8 +68,10 @@ jobs:
 
           - name: Build Docker image
             run: |
-                #docker buildx build --no-cache --platform linux/amd64 -t ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} -f docker/web-and-data/Dockerfile .
-                docker build -t ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} -f docker/web-and-data/Dockerfile .
+                docker buildx build --no-cache --platform linux/amd64 -t ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} -f docker/web-and-data/Dockerfile .
+                
+                ##### PULL IMAGE FROM CACHE SO IT IS LOCALLY ACCESSIBLE
+                docker image pull ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
 
           ##### DEBUG: LISTING IMAGES
           - name: List Docker images

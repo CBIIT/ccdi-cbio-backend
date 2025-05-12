@@ -47,25 +47,18 @@ jobs:
           - name: Set up Docker Buildx
             uses: docker/setup-buildx-action@v2
 
-          - name: Authenticate to OIDC
-            uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502     # v4.0.2
-            with:
-                role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-                aws-region: ${{ secrets.AWS_REGION }}
-                role-session-name: ${{ github.actor }}
-
-          - name: Download properties files from S3 to src/main/resources/
-            run: |
-                aws s3 cp s3://cbio-nonprod-backend-configs/application.properties src/main/resources/application.properties
-
           - name: Rename properties files
             run: |
+                ##### ADDED RENAMING APPLICATION.PROPERTIES
+                mv src/main/resources/application.properties.EXAMPLE src/main/resources/application.properties
+                
                 mv src/main/resources/log4j.properties.EXAMPLE src/main/resources/log4j.properties
                 mv src/main/resources/security.properties.EXAMPLE src/main/resources/security.properties
 
           - name: Build Docker image
             run: |
-                docker buildx build --no-cache --platform linux/amd64 -t ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} -f docker/web-and-data/Dockerfile .
+                ##### BUILD WITH OUTPUT TYPE SET TO DOCKER SO IT IS LOCALLY ACCESSIBLE AND NOT STORED IN DOCKER CACHE
+                docker buildx build --no-cache --output type=docker --platform linux/amd64 -t ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} -f docker/web-and-data/Dockerfile .
 
           - name: Set Trivy exit code
             run: |
@@ -93,6 +86,14 @@ jobs:
                 git tag ${{ env.IMAGE_TAG }}
                 git push origin ${{ env.IMAGE_TAG }}
         
+          ##### MOVED OIDC AUTHENTICATION
+          - name: Authenticate to OIDC
+            uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502     # v4.0.2
+            with:
+                role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+                aws-region: ${{ secrets.AWS_REGION }}
+                role-session-name: ${{ github.actor }}
+          
           - name: Login to Amazon ECR
             id: login-aws-ecr
             uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076     # v2.0.1
@@ -105,6 +106,7 @@ jobs:
                 docker tag  $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
                 docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
+          ##### MAYBE NOT NEEDED - THIS ENVIRONMENT GETS DESTROYED ANYWAY?
           - name: Clean up Docker images
             run: |
                 docker builder prune --all --force

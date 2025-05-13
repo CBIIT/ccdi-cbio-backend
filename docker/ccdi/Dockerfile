@@ -77,4 +77,5 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes             $PORTAL_WEB_HOME/
 # CMD ["sh", "-c", "java $(echo $JAVA_OPTS) -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication $(echo $WEBAPP_OPTS)"]
 
 
-CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.datasource.url=$DB_URL --spring.datasource.username=$DB_USERNAME --spring.datasource.password=$DB_PASSWORD --session.service.url=$SESSION_URL"]
+# CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.datasource.url=$DB_URL --spring.datasource.username=$DB_USERNAME --spring.datasource.password=$DB_PASSWORD --session.service.url=$SESSION_URL"]
+CMD ["sh", "-c", "java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.datasource.url=$DB_URL --spring.datasource.username=$DB_USERNAME --spring.datasource.password=$DB_PASSWORD --session.service.url=$SESSION_URL"]

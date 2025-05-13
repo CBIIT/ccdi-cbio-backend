@@ -58,8 +58,8 @@ RUN find /core/scripts/ -type f -executable \! -name '*.pl' -print0 | xargs -0 -
 
 # put config files in this folder if you want to override config
 ENV PORTAL_WEB_HOME=/cbioportal-webapp
-# ENV PORTAL_HOME=/cbioportal
-ENV PORTAL_HOME=/cbioportal-webapp
+ENV PORTAL_HOME=/cbioportal
+# ENV PORTAL_HOME=/cbioportal-webapp
 ENV JAVA_OPTS="-Xms2G -Xmx8G"
 ENV WEBAPP_OPTS=
 

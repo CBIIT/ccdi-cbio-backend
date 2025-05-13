@@ -78,4 +78,12 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes             $PORTAL_WEB_HOME/
 
 
 # CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --session.service.url=${SESSION_URL}"]
-CMD exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --session.service.url=${SESSION_URL}
+
+CMD ["sh", "-c", "exec java $JAVA_OPTS --spring.datasource.url=$DB_URL --spring.datasource.username=$DB_USERNAME --spring.datasource.password=$DB_PASSWORD --session.service.url=$SESSION_URL -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication"]
+# -Dspring.datasource.username=cbio_user \
+#      -Dspring.datasource.password=somepassword \
+#      -Dspring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver \
+#      -Dspring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect \
+#      -Dspring.datasource.url='jdbc:mysql://cbio_user:somepassword@localhost:3306/cbioportal?useSSL=false&allowPublicKeyRetrieval=true' \
+#      -Dshow.civic=true \
+     -Dskin.footer='' \

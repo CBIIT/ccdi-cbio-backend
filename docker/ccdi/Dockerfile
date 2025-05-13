@@ -58,8 +58,8 @@ RUN find /core/scripts/ -type f -executable \! -name '*.pl' -print0 | xargs -0 -
 
 # put config files in this folder if you want to override config
 ENV PORTAL_WEB_HOME=/cbioportal-webapp
-ENV PORTAL_HOME=/cbioportal
-# ENV PORTAL_HOME=/cbioportal-webapp
+# ENV PORTAL_HOME=/cbioportal
+ENV PORTAL_HOME=/cbioportal-webapp
 ENV JAVA_OPTS="-Xms2G -Xmx8G"
 ENV WEBAPP_OPTS=
 
@@ -81,10 +81,3 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes             $PORTAL_WEB_HOME/
 
 # CMD ["sh", "-c", "exec java $JAVA_OPTS -Dspring.datasource.url='${DB_URL}' -Dspring.datasource.username=$DB_USERNAME -Dspring.datasource.password=$DB_PASSWORD -Dsession.service.url='${SESSION_URL}' -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication"]
 CMD ["sh", "-c", "exec java $JAVA_OPTS -Dspring.datasource.url='${DB_URL}' -Dspring.datasource.username=$DB_USERNAME -Dspring.datasource.password=$DB_PASSWORD -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication"]
-# -Dspring.datasource.username=cbio_user \
-#      -Dspring.datasource.password=somepassword \
-#      -Dspring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver \
-#      -Dspring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect \
-#      -Dspring.datasource.url='jdbc:mysql://cbio_user:somepassword@localhost:3306/cbioportal?useSSL=false&allowPublicKeyRetrieval=true' \
-#      -Dshow.civic=true \
-    #  -Dskin.footer='' \

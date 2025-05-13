@@ -86,4 +86,4 @@ CMD ["sh", "-c", "exec java $JAVA_OPTS --spring.datasource.url=$DB_URL --spring.
 #      -Dspring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect \
 #      -Dspring.datasource.url='jdbc:mysql://cbio_user:somepassword@localhost:3306/cbioportal?useSSL=false&allowPublicKeyRetrieval=true' \
 #      -Dshow.civic=true \
-     -Dskin.footer='' \
+    #  -Dskin.footer='' \

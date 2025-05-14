@@ -47,11 +47,11 @@ jobs:
           - name: Set up Docker Buildx
             uses: docker/setup-buildx-action@v2
 
-          - name: Rename properties files
-            run: |
-                mv src/main/resources/application.properties.EXAMPLE src/main/resources/application.properties
-                mv src/main/resources/log4j.properties.EXAMPLE src/main/resources/log4j.properties
-                mv src/main/resources/security.properties.EXAMPLE src/main/resources/security.properties
+          # - name: Rename properties files
+          #   run: |
+          #       mv src/main/resources/application.properties.EXAMPLE src/main/resources/application.properties
+          #       mv src/main/resources/log4j.properties.EXAMPLE src/main/resources/log4j.properties
+          #       mv src/main/resources/security.properties.EXAMPLE src/main/resources/security.properties
 
           - name: Build Docker image
             run: |

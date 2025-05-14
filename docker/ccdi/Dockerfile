@@ -23,6 +23,14 @@ WORKDIR /cbioportal
 RUN mvn dependency:go-offline --fail-never
 
 COPY $PWD /cbioportal
+
+# Copy properties files from default
+RUN mv /cbioportal/src/main/resources/application.properties.EXAMPLE /cbioportal/src/main/resources/application.properties
+RUN mv /cbioportal/src/main/resources/log4j.properties.EXAMPLE /cbioportal/src/main/resources/log4j.properties
+RUN mv /cbioportal/src/main/resources/security.properties.EXAMPLE /cbioportal/src/main/resources/security.properties \
+    && echo -e "\nsecurity.cors.allowed-origins=*" >> /cbioportal/src/main/resources/security.properties
+
+
 RUN mvn install package -DskipTests -q
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*-exec.jar)
 
@@ -78,7 +86,8 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes             $PORTAL_WEB_HOME/
 
 
 # CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.config.location=cbioportal-webapp/application.properties --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --logging.level.root=DEBUG --session.service.url=${SESSION_URL}"]
-CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.config.location=cbioportal-webapp/application.properties --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --logging.level.root=DEBUG --authenticate=false --security.cors.allowed-origins='*.ccdi.cancer.gov,*.cloudfront.net'"]
+# CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.config.location=cbioportal-webapp/application.properties --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --logging.level.root=DEBUG --security.cors.allowed-origins=*"]
+CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.config.location=cbioportal-webapp/application.properties --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --logging.level.root=DEBUG"]
 
 # CMD ["sh", "-c", "exec java $JAVA_OPTS -Dspring.datasource.url='${DB_URL}' -Dspring.datasource.username=$DB_USERNAME -Dspring.datasource.password=$DB_PASSWORD -Dsession.service.url='${SESSION_URL}' -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication"]
 # CMD ["sh", "-c", "exec java $JAVA_OPTS -Dspring.datasource.url='${DB_URL}' -Dspring.datasource.username=$DB_USERNAME -Dspring.datasource.password=$DB_PASSWORD -Dlogging.level.root=DEBUG -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication"]

@@ -23,6 +23,19 @@ WORKDIR /cbioportal
 RUN mvn dependency:go-offline --fail-never
 
 COPY $PWD /cbioportal
+
+########################################################################################
+########################################################################################
+
+# Copy properties files from default
+RUN mv /cbioportal/src/main/resources/application.properties.EXAMPLE /cbioportal/src/main/resources/application.properties
+RUN mv /cbioportal/src/main/resources/log4j.properties.EXAMPLE /cbioportal/src/main/resources/log4j.properties
+RUN mv /cbioportal/src/main/resources/security.properties.EXAMPLE /cbioportal/src/main/resources/security.properties \
+    && echo -e "\nsecurity.cors.allowed-origins=*" >> /cbioportal/src/main/resources/security.properties
+
+########################################################################################
+########################################################################################
+
 RUN mvn install package -DskipTests -q
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*-exec.jar)
 
@@ -59,6 +72,7 @@ RUN find /core/scripts/ -type f -executable \! -name '*.pl' -print0 | xargs -0 -
 # put config files in this folder if you want to override config
 ENV PORTAL_WEB_HOME=/cbioportal-webapp
 ENV PORTAL_HOME=/cbioportal
+# ENV PORTAL_HOME=/cbioportal-webapp
 ENV JAVA_OPTS="-Xms2G -Xmx8G"
 ENV WEBAPP_OPTS=
 
@@ -71,6 +85,10 @@ COPY --from=build ${DEPENDENCY}/META-INF                    $PORTAL_WEB_HOME/MET
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes             $PORTAL_WEB_HOME/
 
 # add entrypoint
-COPY --from=build /cbioportal/docker/web-and-data/docker-entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["sh", "-c", "java $(echo $JAVA_OPTS) -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication $(echo $WEBAPP_OPTS)"]
+# COPY --from=build /cbioportal/docker/web-and-data/docker-entrypoint.sh /usr/local/bin/
+# ENTRYPOINT ["docker-entrypoint.sh"]
+# CMD ["sh", "-c", "java $(echo $JAVA_OPTS) -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication $(echo $WEBAPP_OPTS)"]
+
+# add entrypoint
+# CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.config.location=cbioportal-webapp/application.properties --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --logging.level.root=DEBUG"]
+CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.config.location=cbioportal-webapp/application.properties --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD}"]

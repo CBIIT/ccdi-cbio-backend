@@ -123,7 +123,7 @@ _main() {
     pattern1='(java)*(org\.cbioportal\.PortalApplication)'
     pattern2='(java)*(-jar)*(cbioportal-exec.jar)'
     found=false
-        
+
     # Loop through all arguments
     for arg in "$@"; do
         if [[ "$arg" =~ $pattern1 ]] || [[ "$arg" =~ $pattern2 ]]; then

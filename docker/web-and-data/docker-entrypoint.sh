@@ -116,12 +116,6 @@ migrate_db() {
 }
 
 _main() {
-    # UPDATE PROPERTIES FROM ENV VAR
-    rm -rf ${PORTAL_HOME}/application.properties && cp ${PORTAL_HOME}/application.properties.TEMPLATE ${PORTAL_HOME}/application.properties
-    echo "spring.datasource.url=${DB_URL}" >> ${PORTAL_HOME}/application.properties
-    echo "spring.datasource.username=${DB_USERNAME}" >> ${PORTAL_HOME}/application.properties
-    echo "spring.datasource.password=${DB_PASSWORD}" >> ${PORTAL_HOME}/application.properties
-    
     # when running the webapp, check db and do migration first
     # check if command is something like "java -jar webapp-runner.jar"
     
@@ -129,8 +123,7 @@ _main() {
     pattern1='(java)*(org\.cbioportal\.PortalApplication)'
     pattern2='(java)*(-jar)*(cbioportal-exec.jar)'
     found=false
-    SHOW_DEBUG_INFO=true
-    
+        
     # Loop through all arguments
     for arg in "$@"; do
         if [[ "$arg" =~ $pattern1 ]] || [[ "$arg" =~ $pattern2 ]]; then

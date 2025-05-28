@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.1</version>
+		<version>3.5.0</version>
 	</parent>
 
 	<groupId>org.cbioportal</groupId>
@@ -167,10 +167,6 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${springdoc.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -396,6 +392,60 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+			 <!-- Force Tomcat ≥10.1.41 -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>10.1.41</version>   <!-- CVE‑2025‑31651,‑24813 -->
+        </dependency>
+
+        <!-- Commons Text – fixes CVE‑2022‑42889 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.13.1</version>
+        </dependency>
+
+        <!-- SnakeYAML – fixes CVE‑2022‑1471 -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+        <!-- Json‑smart – fixes CVE‑2024‑57699 -->
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+            <version>2.5.2</version>
+        </dependency>
+
+        <!-- Nimbus JOSE + JWT – fixes CVE‑2023‑6481 -->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>9.37.2</version>
+        </dependency>
+
+        <!-- Apache Batik – fixes CVE‑2022‑44729 -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-bridge</artifactId>
+            <version>1.17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-transcoder</artifactId>
+            <version>1.17</version>
+        </dependency>
+
+        <!-- Protobuf – fixes CVE‑2022‑3509 -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.21.7</version>
+        </dependency>
+
         </dependencies>
     </dependencyManagement>
     

@@ -127,14 +127,6 @@
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>pl.pragmatists</groupId>
 			<artifactId>JUnitParams</artifactId>
 			<version>1.1.0</version>
@@ -392,6 +384,40 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+			        <!-- Woodstox – fixes CVE‑2022‑40152 -->
+        <dependency>
+            <groupId>com.fasterxml.woodstox</groupId>
+            <artifactId>woodstox-core</artifactId>
+            <version>6.4.0</version>
+        </dependency>
+
+        <!-- Commons‑FileUpload – fixes CVE‑2023‑24998  
+             (Spring‑doc pulls this transitively when swagger‑ui is enabled) -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.5</version>
+        </dependency>
+
+        <!-- Netty BOM ≥4.1.100.Final – fixes HTTP/2 Rapid‑Reset (GHSA-xpw8‑…) -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-bom</artifactId>
+            <version>4.1.110.Final</version>   <!-- Latest as of 2025‑05 -->
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+        <!-- Protobuf – fixes CVE‑2024‑7254  
+             Note: Spring libraries only use Protobuf *lite* APIs; 4.x is binary‑compatible. -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>4.28.2</version>
+        </dependency>
+
+
 			 <!-- Force Tomcat ≥10.1.41 -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>

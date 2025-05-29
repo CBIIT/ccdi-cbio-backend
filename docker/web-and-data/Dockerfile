@@ -44,17 +44,17 @@ RUN apt-get update; apt-get install -y --no-install-recommends \
 RUN mkdir -p /cbioportal
 
 #Download core files
-RUN wget https://github.com/cBioPortal/cbioportal-core/releases/download/v1.0.9/core-1.0.9.jar -P core/ ; cd core ; jar -xf core-1.0.9.jar scripts/ requirements.txt ; chmod -R a+x scripts/ ; cd ..;
+# RUN wget https://github.com/cBioPortal/cbioportal-core/releases/download/v1.0.9/core-1.0.9.jar -P core/ ; cd core ; jar -xf core-1.0.9.jar scripts/ requirements.txt ; chmod -R a+x scripts/ ; cd ..;
 
 
-COPY --from=build /cbioportal/src/main/resources/db-scripts /cbioportal/db-scripts
+# COPY --from=build /cbioportal/src/main/resources/db-scripts /cbioportal/db-scripts
 
-# install build and runtime dependencies
-# ignore update failure980[1298[01 w2308s
-RUN  pip3 install --break-system-packages -r /core/requirements.txt
+# # install build and runtime dependencies
+# # ignore update failure980[1298[01 w2308s
+# RUN  pip3 install --break-system-packages -r /core/requirements.txt
 
-# add importer scripts to PATH for easy running in containers
-RUN find /core/scripts/ -type f -executable \! -name '*.pl' -print0 | xargs -0 -- ln -st /usr/local/bin
+# # add importer scripts to PATH for easy running in containers
+# RUN find /core/scripts/ -type f -executable \! -name '*.pl' -print0 | xargs -0 -- ln -st /usr/local/bin
 
 # put config files in this folder if you want to override config
 ENV PORTAL_WEB_HOME=/cbioportal-webapp

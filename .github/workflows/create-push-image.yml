@@ -96,3 +96,8 @@ jobs:
             run: |
                 docker tag  $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
                 docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+
+          - name: "Docker image successfully pushed with tag: ${{ env.IMAGE_TAG }}"
+            run: |
+              echo "The Docker image has been successfully pushed with the tag: ${{ env.IMAGE_TAG }}"

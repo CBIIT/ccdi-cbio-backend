@@ -12,7 +12,7 @@
 # from the final image. No confidential information is exposed.
 # (see: stackoverflow.com/questions/56278325)
 # FROM maven:3-eclipse-temurin-21 as build
-FROM maven:3-eclipse-temurin-17 AS build
+FROM maven:3-eclipse-temurin-21 AS build
 
 
 # download maven dependencies first to take advantage of docker caching
@@ -28,7 +28,7 @@ COPY $PWD /cbioportal
 RUN mvn install package -DskipTests -q
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*-exec.jar)
 
-FROM eclipse-temurin:17
+FROM eclipse-temurin:21
 
 # download system dependencies first to take advantage of docker caching
 RUN apt-get update; apt-get install -y --no-install-recommends \

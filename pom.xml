@@ -516,6 +516,29 @@
 			<artifactId>bcutil-jdk18on</artifactId>
 			<version>${bouncy_castle.version}</version>
 		</dependency>
+		<dependency>
+		<groupId>io.netty</groupId>
+		<artifactId>netty-bom</artifactId>
+		<version>4.2.0.RC3</version>   <!-- Fixes CVE-2025-24970 -->
+		<type>pom</type>
+		<scope>import</scope>
+	</dependency>
+	<dependency>
+    <groupId>org.apache.xmlgraphics</groupId>
+    <artifactId>batik-transcoder</artifactId>
+    <version>1.17</version> <!-- Fixes CVE-2022-44729 -->
+</dependency>
+
+<dependency>
+    <groupId>commons-beanutils</groupId>
+    <artifactId>commons-beanutils</artifactId>
+    <version>1.11.0</version>
+</dependency>
+<dependency>
+    <groupId>com.squareup.okio</groupId>
+    <artifactId>okio</artifactId>
+    <version>3.3.0</version>
+</dependency>
 
         </dependencies>
     </dependencyManagement>

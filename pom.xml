@@ -500,6 +500,22 @@
             <artifactId>protobuf-java</artifactId>
             <version>4.28.2</version>
         </dependency>
+		<!-- Override vulnerable Bouncy Castle versions with 1.78 -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk18on</artifactId>
+			<version>${bouncy_castle.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk18on</artifactId>
+			<version>${bouncy_castle.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcutil-jdk18on</artifactId>
+			<version>${bouncy_castle.version}</version>
+		</dependency>
 
         </dependencies>
     </dependencyManagement>

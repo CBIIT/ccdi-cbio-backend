@@ -51,7 +51,12 @@ RUN apt-get update; apt-get install -y --no-install-recommends \
         python3-dev \
         python3-pip \
         unzip \
-    && rm -rf /var/lib/apt/lists/*
+        libsqlite3-0 \
+    && apt-get upgrade -y libgssapi-krb5-2 libk5crypto3 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*\
+    && pip3 install --break-system-packages setuptools>=68.0.0
+   
 
 # copy over core files and data-related scripts
 RUN mkdir -p /cbioportal

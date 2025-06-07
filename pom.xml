@@ -284,7 +284,14 @@
             <artifactId>mockserver-client-java</artifactId>
             <version>${mockserver.version}</version>
             <scope>test</scope>
+			<exclusions>
+        <exclusion>
+					<groupId>commons-io</groupId>
+					<artifactId>commons-io</artifactId>
+				</exclusion>
+    </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.github.dasniko</groupId>
             <artifactId>testcontainers-keycloak</artifactId>
@@ -356,6 +363,12 @@
             <!-- use uber jar with all dependencies included, change classifier
             to http for smaller jar -->
             <classifier>all</classifier>
+			<exclusions>
+			<exclusion>
+				<groupId>com.squareup.okio</groupId>
+				<artifactId>okio</artifactId>
+			</exclusion>
+		</exclusions>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -482,22 +495,6 @@
             <version>9.37.2</version>
         </dependency>
 
-        <!-- Apache Batik – fixes CVE‑2022‑44729 -->
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-bridge</artifactId>
-            <version>1.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-transcoder</artifactId>
-            <version>1.16</version>
-        </dependency>
-		<dependency>
-		<groupId>org.apache.xmlgraphics</groupId>
-		<artifactId>batik-transcoder</artifactId>
-		<version>1.17</version>
-	</dependency>
         <!-- Protobuf – fixes CVE‑2022‑3509 -->
         <dependency>
             <groupId>com.google.protobuf</groupId>
@@ -519,11 +516,6 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcutil-jdk18on</artifactId>
 			<version>${bouncy_castle.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.70</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
@@ -561,6 +553,12 @@
     <version>2.14.0</version>
 </dependency>
 
+        <!-- Apache Batik – fixes CVE‑2022‑44729 -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-bridge</artifactId>
+            <version>1.17</version>
+        </dependency>
         </dependencies>
     </dependencyManagement>
     

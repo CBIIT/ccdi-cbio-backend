@@ -493,7 +493,11 @@
             <artifactId>batik-transcoder</artifactId>
             <version>1.16</version>
         </dependency>
-
+		<dependency>
+		<groupId>org.apache.xmlgraphics</groupId>
+		<artifactId>batik-transcoder</artifactId>
+		<version>1.17</version>
+	</dependency>
         <!-- Protobuf – fixes CVE‑2022‑3509 -->
         <dependency>
             <groupId>com.google.protobuf</groupId>
@@ -517,6 +521,17 @@
 			<version>${bouncy_castle.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.70</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15to18</artifactId>
+			<version>1.78</version>
+		</dependency>
+
+		<dependency>
 		<groupId>io.netty</groupId>
 		<artifactId>netty-bom</artifactId>
 		<version>4.2.0.RC3</version>   <!-- Fixes CVE-2025-24970 -->
@@ -529,15 +544,21 @@
     <version>1.17</version> <!-- Fixes CVE-2022-44729 -->
 </dependency>
 
-<dependency>
-    <groupId>commons-beanutils</groupId>
-    <artifactId>commons-beanutils</artifactId>
-    <version>1.11.0</version>
-</dependency>
+	<dependency>
+		<groupId>commons-beanutils</groupId>
+		<artifactId>commons-beanutils</artifactId>
+		<version>1.11.0</version>
+	</dependency>
 <dependency>
     <groupId>com.squareup.okio</groupId>
     <artifactId>okio</artifactId>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
+</dependency>
+
+<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.14.0</version>
 </dependency>
 
         </dependencies>
@@ -803,6 +824,10 @@
 			<id>maven-central</id>
 			<url>https://repo1.maven.org/maven2/</url>
 		</repository>
+		<repository>
+			<id>gael-systems-public</id>
+			<url>https://repository.gael-systems.com/repository/public/</url>
+    	</repository>
 	</repositories>
 
 	<profiles>

@@ -284,14 +284,19 @@
             <artifactId>mockserver-client-java</artifactId>
             <version>${mockserver.version}</version>
             <scope>test</scope>
+        </dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-engine-core</artifactId>
+			<version>2.3</version>
+			<scope>test</scope>
 			<exclusions>
-        <exclusion>
+				<exclusion>
 					<groupId>commons-io</groupId>
 					<artifactId>commons-io</artifactId>
 				</exclusion>
-    </exclusions>
-        </dependency>
-
+			</exclusions>
+		</dependency>
         <dependency>
             <groupId>com.github.dasniko</groupId>
             <artifactId>testcontainers-keycloak</artifactId>
@@ -401,23 +406,25 @@
             <artifactId>commons-text</artifactId>
             <version>1.10.0</version>
         </dependency>
+
+		<dependency>
+    <groupId>com.squareup.okio</groupId>
+    <artifactId>okio</artifactId>
+    <version>3.4.0</version>
+</dependency>
+
+<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.14.0</version>
+</dependency>
+
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
-        	 <!-- SnakeYAML – fixes CVE‑2022‑1471 -->
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>2.3</version>
-        </dependency>
 
 		      <!-- Commons Text – fixes CVE‑2022‑42889 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>1.10.0</version>
-        </dependency>
         
             <dependency>
                 <groupId>org.testcontainers</groupId>
@@ -440,15 +447,6 @@
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>1.5</version>
-        </dependency>
-
-        <!-- Netty BOM ≥4.1.100.Final – fixes HTTP/2 Rapid‑Reset (GHSA-xpw8‑…) -->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-bom</artifactId>
-            <version>4.1.100.Final</version>   <!-- Latest as of 2025‑05 -->
-            <type>pom</type>
-            <scope>import</scope>
         </dependency>
 
         <!-- Protobuf – fixes CVE‑2024‑7254  
@@ -474,12 +472,6 @@
             <version>1.10.0</version>
         </dependency>
 
-        <!-- SnakeYAML – fixes CVE‑2022‑1471 -->
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>2.3</version>
-        </dependency>
 
         <!-- Json‑smart – fixes CVE‑2024‑57699 -->
         <dependency>
@@ -495,12 +487,6 @@
             <version>9.37.2</version>
         </dependency>
 
-        <!-- Protobuf – fixes CVE‑2022‑3509 -->
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>4.28.2</version>
-        </dependency>
 		<!-- Override vulnerable Bouncy Castle versions with 1.78 -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
@@ -541,7 +527,15 @@
 		<artifactId>commons-beanutils</artifactId>
 		<version>1.11.0</version>
 	</dependency>
-<dependency>
+
+        <!-- Apache Batik – fixes CVE‑2022‑44729 -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-bridge</artifactId>
+            <version>1.17</version>
+        </dependency>
+
+		<dependency>
     <groupId>com.squareup.okio</groupId>
     <artifactId>okio</artifactId>
     <version>3.4.0</version>
@@ -553,12 +547,6 @@
     <version>2.14.0</version>
 </dependency>
 
-        <!-- Apache Batik – fixes CVE‑2022‑44729 -->
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-bridge</artifactId>
-            <version>1.17</version>
-        </dependency>
         </dependencies>
     </dependencyManagement>
     

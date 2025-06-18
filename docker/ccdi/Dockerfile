@@ -40,7 +40,8 @@ RUN mv /cbioportal/src/main/resources/security.properties.EXAMPLE /cbioportal/sr
 RUN mvn install package -DskipTests -q
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*-exec.jar)
 
-FROM eclipse-temurin:21
+# FROM eclipse-temurin:21
+FROM eclipse-temurin:21-alpine AS fnl_base_image
 
 # download system dependencies first to take advantage of docker caching
 RUN apt-get update; apt-get install -y --no-install-recommends \

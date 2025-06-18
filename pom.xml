@@ -525,7 +525,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>10.1.41</version>   <!-- CVE‑2025‑31651,‑24813 -->
+            <version>11.0.8</version>   <!-- CVE‑2025‑31651,‑24813 -->
         </dependency>
 
         <!-- Commons Text – fixes CVE‑2022‑42889 -->
@@ -583,6 +583,12 @@
     <groupId>org.apache.xmlgraphics</groupId>
     <artifactId>batik-transcoder</artifactId>
     <version>1.17</version> <!-- Fixes CVE-2022-44729 -->
+
+        <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-web</artifactId>
+    <version>6.2.8</version>
+</dependency>
 </dependency>
 
 	<dependency>

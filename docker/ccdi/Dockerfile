@@ -69,8 +69,7 @@ RUN apk update && apk add --no-cache \
     py3-pip \
     unzip \
     sqlite-libs \
-    krb5 \
-    && pip3 install --upgrade pip setuptools>=68.0.0
+    krb5
 
 
 # copy over core files and data-related scripts

@@ -56,7 +56,11 @@ RUN apk update && apk add --no-cache \
     py3-pip \
     unzip
 
-
+    
+# Upgrade pip and setuptools to fix CVE
+RUN pip3 install --break-system-packages --upgrade pip && \
+    pip3 install --break-system-packages setuptools==78.1.1
+    
 # copy over core files and data-related scripts
 RUN mkdir -p /cbioportal
 

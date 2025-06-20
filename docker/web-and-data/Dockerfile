@@ -28,20 +28,39 @@ COPY $PWD /cbioportal
 RUN mvn install package -DskipTests -q
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*-exec.jar)
 
-FROM eclipse-temurin:21
+# # FROM eclipse-temurin:21
+# FROM eclipse-temurin:21-alpine AS fnl_base_image
 
-# download system dependencies first to take advantage of docker caching
-RUN apt-get update; apt-get install -y --no-install-recommends \
-        build-essential \
-        default-mysql-client \
-        default-libmysqlclient-dev \
-        python3 \
-        python3-setuptools \
-        python3-dev \
-        python3-pip \
-        unzip \
-    && rm -rf /var/lib/apt/lists/*
+# # download system dependencies first to take advantage of docker caching
+# RUN apt-get update; apt-get install -y --no-install-recommends \
+#         build-essential \
+#         default-mysql-client \
+#         default-libmysqlclient-dev \
+#         python3 \
+#         python3-setuptools \
+#         python3-dev \
+#         python3-pip \
+#         unzip \
+#     && rm -rf /var/lib/apt/lists/*
 
+FROM eclipse-temurin:21-alpine AS fnl_base_image
+
+# Install Alpine equivalents of the dependencies
+RUN apk update && apk add --no-cache \
+    build-base \
+    mariadb-client \
+    mariadb-dev \
+    python3 \
+    py3-setuptools \
+    python3-dev \
+    py3-pip \
+    unzip
+
+    
+# Upgrade pip and setuptools to fix CVE
+RUN pip3 install --break-system-packages --upgrade pip && \
+    pip3 install --break-system-packages setuptools==78.1.1
+    
 # copy over core files and data-related scripts
 RUN mkdir -p /cbioportal
 

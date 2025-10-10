@@ -14,6 +14,11 @@
 # FROM maven:3-eclipse-temurin-21 as build
 FROM maven:3-eclipse-temurin-21 AS build
 
+# Warm JitPack for cbioportal-frontend v6.0.24
+RUN for i in 1 2 3; do \
+    curl -fsSL https://jitpack.io/com/github/cbioportal/cbioportal-frontend/v6.0.24/cbioportal-frontend-v6.0.24.pom && break || sleep 5 \
+    done
+
 # download maven dependencies first to take advantage of docker caching
 COPY pom.xml                                        /cbioportal/
 COPY version.sh                                     /cbioportal/

@@ -27,7 +27,7 @@
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<!--        TODO replace with version of cbioportal frontend with compatible
         login url-->
-		<frontend.groupId>com.github.cbioportal</frontend.groupId>
+		<frontend.groupId>com.github.cBioPortal</frontend.groupId>
 		<frontend.version>v6.0.24</frontend.version>
 
         <!-- THIS SHOULD BE KEPT IN SYNC TO VERSION IN CGDS.SQL -->
@@ -857,6 +857,11 @@
 
 
 	<repositories>
+		<!-- Maven Central should be first for standard dependencies -->
+		<repository>
+			<id>maven-central</id>
+			<url>https://repo1.maven.org/maven2/</url>
+		</repository>
 		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
@@ -874,10 +879,6 @@
 				https://build.shibboleth.net/nexus/content/repositories/releases/</url>
 		</repository>
 		<!-- needed for keycloak test containers -->
-		<repository>
-			<id>maven-central</id>
-			<url>https://repo1.maven.org/maven2/</url>
-		</repository>
 		<repository>
 			<id>gael-systems-public</id>
 			<url>https://repository.gael-systems.com/repository/public/</url>

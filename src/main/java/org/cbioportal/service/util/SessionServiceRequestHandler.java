@@ -50,7 +50,7 @@ public class SessionServiceRequestHandler {
     }
 
     public Boolean isSessionInfoServiceEnabled() {
-        return !StringUtils.isEmpty(sessionInfoURL);
+        return !StringUtils.isEmpty(sessionInfoURL) || !StringUtils.isEmpty(sessionServiceURL);
     }
 
     public HttpHeaders getHttpHeaders() {
@@ -94,7 +94,7 @@ public class SessionServiceRequestHandler {
         } else if (!StringUtils.isEmpty(sessionServiceURL)) {
             infoUrl = sessionServiceURL.endsWith("/") ? sessionServiceURL + "info" : sessionServiceURL + "/info";
         } else {
-            throw new IllegalStateException("Both session.info.url and session.service.url are empty; cannot construct info URL.");
+            throw new IllegalStateException("Unexpected state: Both session.info.url and session.service.url are empty; cannot construct info URL. This should not occur if isSessionInfoServiceEnabled() is checked before calling this method. Please check configuration and call flow.");
         }
         
         // add basic authentication in header

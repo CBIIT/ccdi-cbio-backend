@@ -32,6 +32,9 @@ public class SessionServiceRequestHandler {
     @Value("${session.service.url:}")
     private String sessionServiceURL;
 
+    @Value("${session.info.url:}")
+    private String sessionInfoURL;
+
     @Value("${session.service.user:}")
     private String sessionServiceUser;
 
@@ -44,6 +47,10 @@ public class SessionServiceRequestHandler {
 
     public Boolean isSessionServiceEnabled() {
         return !StringUtils.isEmpty(sessionServiceURL);
+    }
+
+    public Boolean isSessionInfoServiceEnabled() {
+        return !StringUtils.isEmpty(sessionInfoURL);
     }
 
     public HttpHeaders getHttpHeaders() {
@@ -70,6 +77,24 @@ public class SessionServiceRequestHandler {
         ResponseEntity<String> responseEntity = restTemplate.exchange(sessionServiceURL + type + "/" + id,
                 HttpMethod.GET, headers, String.class);
 
+        return responseEntity.getBody();
+    }
+
+    /**
+     * Gets session service info using dedicated session.info.url property
+     * @return session service info as JSON string
+     */
+    public String getSessionServiceInfo() throws Exception {
+        RestTemplate restTemplate = new RestTemplate();
+        
+        // Use dedicated session.info.url if configured, otherwise fallback to session.service.url + "info"
+        String infoUrl = !StringUtils.isEmpty(sessionInfoURL) ? sessionInfoURL : sessionServiceURL + "info";
+        
+        // add basic authentication in header
+        HttpEntity<String> headers = new HttpEntity<>(getHttpHeaders());
+        ResponseEntity<String> responseEntity = restTemplate.exchange(infoUrl,
+                HttpMethod.GET, headers, String.class);
+        
         return responseEntity.getBody();
     }
 

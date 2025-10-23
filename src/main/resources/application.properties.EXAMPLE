@@ -251,6 +251,7 @@ genomespace=true
 # WARNING: do not use session service with -Dauthenticate=false
 #  either use authentication or change to -Dauthenticate=noauthsessionservice
 session.service.url=https://cbioportal-session-service.herokuapp.com/session_service/api/sessions/heroku_portal/
+session.info.url=http://localhost:8090/info
 # if basic authentication is enabled on session service one should set:
 #session.service.user=
 #session.service.password=

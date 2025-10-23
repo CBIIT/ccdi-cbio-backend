@@ -88,7 +88,9 @@ public class SessionServiceRequestHandler {
         RestTemplate restTemplate = new RestTemplate();
         
         // Use dedicated session.info.url if configured, otherwise fallback to session.service.url + "info"
-        String infoUrl = !StringUtils.isEmpty(sessionInfoURL) ? sessionInfoURL : sessionServiceURL + "info";
+        String infoUrl = !StringUtils.isEmpty(sessionInfoURL)
+            ? sessionInfoURL
+            : (sessionServiceURL.endsWith("/") ? sessionServiceURL + "info" : sessionServiceURL + "/info");
         
         // add basic authentication in header
         HttpEntity<String> headers = new HttpEntity<>(getHttpHeaders());

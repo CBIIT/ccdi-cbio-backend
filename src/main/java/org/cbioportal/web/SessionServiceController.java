@@ -216,7 +216,7 @@ public class SessionServiceController {
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponse(responseCode = "200", description = "OK",
         content = @Content(schema = @Schema(implementation = Object.class)))
-    public ResponseEntity<Object> getSessionServiceInfo() {
+    public ResponseEntity<String> getSessionServiceInfo() {
         
         if (!sessionServiceRequestHandler.isSessionInfoServiceEnabled()) {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);

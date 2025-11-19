@@ -516,7 +516,7 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.5</version>
+            <version>1.6</version>
         </dependency>
 
         <!-- Protobuf – fixes CVE‑2024‑7254  
@@ -541,13 +541,6 @@
             <groupId>net.minidev</groupId>
             <artifactId>json-smart</artifactId>
             <version>2.5.2</version>
-        </dependency>
-
-        <!-- Nimbus JOSE + JWT – fixes CVE‑2023‑6481 -->
-        <dependency>
-            <groupId>com.nimbusds</groupId>
-            <artifactId>nimbus-jose-jwt</artifactId>
-            <version>9.37.2</version>
         </dependency>
 
 		<!-- Override vulnerable Bouncy Castle versions with 1.78 -->
@@ -639,11 +632,6 @@
             <scope>import</scope>
         </dependency>
 
-		<dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.6.0</version>
-        </dependency>
 
 		 <dependency>
             <groupId>org.springframework</groupId>
@@ -652,19 +640,7 @@
             <type>pom</type>
             <scope>import</scope>
         </dependency>
-		<dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-framework-bom</artifactId>
-            <version>6.2.11</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
 
-		<dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.6.0</version>
-        </dependency>
 		  <!-- Apache Commons Lang3 – fixes vulnerability -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -673,13 +649,6 @@
         </dependency>
 
         <!-- Nimbus JOSE + JWT – fixes CVE‑2023‑6481 -->
-        <dependency>
-            <groupId>com.nimbusds</groupId>
-            <artifactId>nimbus-jose-jwt</artifactId>
-            <version>10.0.2</version>
-        </dependency>
- 		
-		<!-- KEEP THIS ONE - line 663 - fixes CVE‑2023‑6481 -->
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>

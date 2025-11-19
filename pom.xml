@@ -107,6 +107,7 @@
 		<bundle.symbolicName.prefix>org.mskcc</bundle.symbolicName.prefix>
 		<bundle.namespace>org.mskcc.mondrian</bundle.namespace>
 		<logback.version>1.5.19</logback.version>
+		<bouncy_castle.version>1.79</bouncy_castle.version>
 	</properties>
 
 	<dependencies>
@@ -658,6 +659,33 @@
             <type>pom</type>
             <scope>import</scope>
         </dependency>
+
+		<dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+		  <!-- Apache Commons Lang3 – fixes vulnerability -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.18.0</version>
+        </dependency>
+
+        <!-- Nimbus JOSE + JWT – fixes CVE‑2023‑6481 -->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>10.0.2</version>
+        </dependency>
+ 		
+		<!-- KEEP THIS ONE - line 663 - fixes CVE‑2023‑6481 -->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>10.0.2</version>
+        </dependency>
+
         </dependencies>
     </dependencyManagement>
     

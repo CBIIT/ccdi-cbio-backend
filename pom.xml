@@ -627,6 +627,16 @@
             <artifactId>tomcat-embed-el</artifactId>
             <version>11.0.12</version>
         </dependency>
+
+
+		 <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-bom</artifactId>
+            <version>6.5.4</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
 		
         </dependencies>
     </dependencyManagement>

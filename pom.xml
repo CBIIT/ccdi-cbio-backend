@@ -100,12 +100,13 @@
         <selenium.version>4.17.0</selenium.version>
 		<sentry.version>7.1.0</sentry.version>
         <clickhouse_testcontainer.version>1.19.7</clickhouse_testcontainer.version>
-        <bouncy_castle.version>1.78</bouncy_castle.version>
 
-
+		
 		<!-- No sure what these are for -->
 		<bundle.symbolicName.prefix>org.mskcc</bundle.symbolicName.prefix>
 		<bundle.namespace>org.mskcc.mondrian</bundle.namespace>
+		<logback.version>1.5.19</logback.version>
+		<bouncy_castle.version>1.79</bouncy_castle.version>
 	</properties>
 
 	<dependencies>
@@ -226,20 +227,11 @@
 			<artifactId>datumbox-framework-lib</artifactId>
 			<version>${datumbox.version}</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-		</dependency>
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-core</artifactId>
+			<version>11.0.12</version>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-jwt</artifactId>
-            <version>1.1.1.RELEASE</version>
-        </dependency> -->
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
@@ -250,7 +242,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
@@ -272,7 +263,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-saml2-service-provider</artifactId>
@@ -283,9 +273,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-
-
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>jwks-rsa</artifactId>
@@ -364,13 +351,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
-		<!-- JitPack Publishing -->
 		<dependency>
 			<groupId>com.github.jitpack</groupId>
 			<artifactId>maven-simple</artifactId>
 			<version>0.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
@@ -403,7 +388,6 @@
             <artifactId>httpclient5</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
@@ -432,125 +416,67 @@
             <artifactId>spring-boot-testcontainers</artifactId>
             <scope>test</scope>
         </dependency>
-	
-        <!-- SnakeYAML – fixes CVE‑2022‑1471 -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>2.3</version>
         </dependency>
-
-		      <!-- Commons Text – fixes CVE‑2022‑42889 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>1.10.0</version>
-        </dependency>
-
 		<dependency>
-    <groupId>com.squareup.okio</groupId>
-    <artifactId>okio</artifactId>
-    <version>3.4.0</version>
-</dependency>
-
-<dependency>
-    <groupId>commons-io</groupId>
-    <artifactId>commons-io</artifactId>
-    <version>2.14.0</version>
-</dependency>
-<!-- Override vulnerable Bouncy Castle bcprov-jdk15on version to fix CVE-2023-33202 -->
-<!-- <dependency>
-    <groupId>org.bouncycastle</groupId>
-    <artifactId>bcprov-jdk15on</artifactId>
-    <version>1.70</version>
-</dependency> -->
-
-<dependency>
-    <groupId>org.jetbrains.kotlin</groupId>
-    <artifactId>kotlin-stdlib</artifactId>
-    <version>2.1.0</version>
-</dependency>
-
-    </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-		<!-- <dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.78</version>
-		</dependency> -->
-
+			<groupId>com.squareup.okio</groupId>
+			<artifactId>okio</artifactId>
+			<version>3.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.14.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib</artifactId>
 			<version>2.1.0</version>
 		</dependency>
+    </dependencies>
 
-		      <!-- Commons Text – fixes CVE‑2022‑42889 -->
-        
-            <dependency>
+    <dependencyManagement>
+        <dependencies>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+        <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers-bom</artifactId>
                 <version>${testcontainers.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-
-			        <!-- Woodstox – fixes CVE‑2022‑40152 -->
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.woodstox</groupId>
             <artifactId>woodstox-core</artifactId>
             <version>6.4.0</version>
         </dependency>
-
-        <!-- Commons‑FileUpload – fixes CVE‑2023‑24998  
-             (Spring‑doc pulls this transitively when swagger‑ui is enabled) -->
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.5</version>
+            <version>1.6</version>
         </dependency>
-
-        <!-- Protobuf – fixes CVE‑2024‑7254  
-             Note: Spring libraries only use Protobuf *lite* APIs; 4.x is binary‑compatible. -->
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>4.28.2</version>
         </dependency>
-
-
-			 <!-- Force Tomcat ≥10.1.41 -->
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>11.0.8</version>   <!-- CVE‑2025‑31651,‑24813 -->
-        </dependency>
-
-        <!-- Commons Text – fixes CVE‑2022‑42889 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>1.10.0</version>
         </dependency>
-
-
-        <!-- Json‑smart – fixes CVE‑2024‑57699 -->
         <dependency>
             <groupId>net.minidev</groupId>
             <artifactId>json-smart</artifactId>
             <version>2.5.2</version>
         </dependency>
-
-        <!-- Nimbus JOSE + JWT – fixes CVE‑2023‑6481 -->
-        <dependency>
-            <groupId>com.nimbusds</groupId>
-            <artifactId>nimbus-jose-jwt</artifactId>
-            <version>9.37.2</version>
-        </dependency>
-
-		<!-- Override vulnerable Bouncy Castle versions with 1.78 -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk18on</artifactId>
@@ -571,52 +497,84 @@
 			<artifactId>bcprov-jdk15to18</artifactId>
 			<version>1.78</version>
 		</dependency>
-
 		<dependency>
-		<groupId>io.netty</groupId>
-		<artifactId>netty-bom</artifactId>
-		<version>4.2.0.RC3</version>   <!-- Fixes CVE-2025-24970 -->
-		<type>pom</type>
-		<scope>import</scope>
-	</dependency>
-	<dependency>
-    <groupId>org.apache.xmlgraphics</groupId>
-    <artifactId>batik-transcoder</artifactId>
-    <version>1.17</version> <!-- Fixes CVE-2022-44729 -->
-</dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-bom</artifactId>
+            <version>4.2.5.Final</version>  
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-transcoder</artifactId>
+			<version>1.17</version> 
+		</dependency>
         <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-web</artifactId>
-    <version>6.2.8</version>
-</dependency>
-
-	<dependency>
-		<groupId>commons-beanutils</groupId>
-		<artifactId>commons-beanutils</artifactId>
-		<version>1.11.0</version>
-	</dependency>
-
-        <!-- Apache Batik – fixes CVE‑2022‑44729 -->
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>6.2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.11.0</version>
+		</dependency>
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-bridge</artifactId>
             <version>1.17</version>
         </dependency>
-
 		<dependency>
-    <groupId>com.squareup.okio</groupId>
-    <artifactId>okio</artifactId>
-    <version>3.4.0</version>
-</dependency>
-
-<dependency>
-    <groupId>commons-io</groupId>
-    <artifactId>commons-io</artifactId>
-    <version>2.14.0</version>
-</dependency>
-
-        </dependencies>
-    </dependencyManagement>
+			<groupId>com.squareup.okio</groupId>
+			<artifactId>okio</artifactId>
+			<version>3.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.14.0</version>
+		</dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>11.0.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-websocket</artifactId>
+            <version>11.0.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-el</artifactId>
+            <version>11.0.12</version>
+        </dependency>
+		 <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-bom</artifactId>
+            <version>6.5.4</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-framework-bom</artifactId>
+            <version>6.2.11</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.18.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>10.0.2</version>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
     
 	<build>
 		<finalName>cbioportal</finalName>
@@ -629,12 +587,10 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-
 		<filters>
 			<filter>src/main/resources/application.properties</filter>
 			<filter>src/main/resources/maven.properties</filter>
 		</filters>
-
 		<resources>
 			<!-- copy over resources directory into classpath of product -->
 			<resource>
@@ -648,7 +604,6 @@
 					<exclude>templates/**</exclude>
 					<exclude>*.pdf</exclude>
 					<exclude>db-scripts/**</exclude>
-
 				</excludes>
 			</resource>
 			<resource>
@@ -687,7 +642,6 @@
                 <filtering>false</filtering>
             </testResource>
         </testResources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -701,7 +655,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 			<!-- write git version properties file (git.properties) -->
 			<plugin>
 				<groupId>io.github.git-commit-id</groupId>
@@ -854,7 +807,6 @@
 				https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-shade-plugin</url>
 		</pluginRepository>
 	</pluginRepositories>
-
 
 	<repositories>
 		<!-- Maven Central should be first for standard dependencies -->

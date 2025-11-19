@@ -106,6 +106,7 @@
 		<!-- No sure what these are for -->
 		<bundle.symbolicName.prefix>org.mskcc</bundle.symbolicName.prefix>
 		<bundle.namespace>org.mskcc.mondrian</bundle.namespace>
+		<logback.version>1.5.19</logback.version>
 	</properties>
 
 	<dependencies>
@@ -571,12 +572,12 @@
 		</dependency>
 
 		<dependency>
-		<groupId>io.netty</groupId>
-		<artifactId>netty-bom</artifactId>
-		<version>4.2.0.RC3</version>   <!-- Fixes CVE-2025-24970 -->
-		<type>pom</type>
-		<scope>import</scope>
-	</dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-bom</artifactId>
+            <version>4.2.5.Final</version>   <!-- Fixes CVE-2025-24970 -->
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
 	<dependency>
     <groupId>org.apache.xmlgraphics</groupId>
     <artifactId>batik-transcoder</artifactId>
@@ -637,7 +638,26 @@
             <scope>import</scope>
         </dependency>
 
-		
+		<dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+
+		 <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-framework-bom</artifactId>
+            <version>6.2.11</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-framework-bom</artifactId>
+            <version>6.2.11</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
         </dependencies>
     </dependencyManagement>
     

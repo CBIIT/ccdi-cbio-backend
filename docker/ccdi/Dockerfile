@@ -32,7 +32,7 @@ COPY $PWD /cbioportal
 RUN mv /cbioportal/src/main/resources/application.properties.EXAMPLE /cbioportal/src/main/resources/application.properties
 RUN mv /cbioportal/src/main/resources/log4j.properties.EXAMPLE /cbioportal/src/main/resources/log4j.properties
 RUN mv /cbioportal/src/main/resources/security.properties.EXAMPLE /cbioportal/src/main/resources/security.properties \
-    && echo -e "\nsecurity.cors.allowed-origins=*" >> /cbioportal/src/main/resources/security.properties
+    && echo -e "\nsecurity.cors.allowed-origins=https://cbioportal-dev-content.ccdi.cancer.gov,https://cbioportal-qa-content.ccdi.cancer.gov,https://cbioportal-stage-content.ccdi.cancer.gov,https://cbioportal-content.ccdi.cancer.gov" >> /cbioportal/src/main/resources/security.properties
 
 ########################################################################################
 ########################################################################################

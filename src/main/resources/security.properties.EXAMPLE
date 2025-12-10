@@ -84,4 +84,4 @@ filter_groups_by_appname=false
 
 ## CORS Configuration (Disabled by default)
 # To Enable CORS uncomment and set the allowed-origins urls. comma delimited. To enable all origins use *
-#security.cors.allowed-origins=*
+security.cors.allowed-origins={{DEV}},{{QA}},{{STAGE}},{{PROD}}

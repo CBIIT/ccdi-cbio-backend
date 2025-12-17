@@ -95,7 +95,7 @@ RUN mkdir -p /cbioportal
 ENV PORTAL_WEB_HOME=/cbioportal-webapp
 ENV PORTAL_HOME=/cbioportal
 # ENV PORTAL_HOME=/cbioportal-webapp
-ENV JAVA_OPTS="-Xms4G -Xmx15G"
+ENV JAVA_OPTS="-Xms4G -Xmx12G"
 ENV WEBAPP_OPTS=
 
 # add exploded Spring Boot jar contents to image

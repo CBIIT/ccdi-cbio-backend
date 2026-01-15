@@ -69,7 +69,7 @@ public class SessionServiceRequestHandler {
   }
 
   public Boolean isSessionInfoServiceEnabled() {
-    return !StringUtils.isEmpty(sessionInfoURL);
+    return !StringUtils.isEmpty(sessionInfoURL) || !StringUtils.isEmpty(sessionServiceURL);
   }
 
   public HttpHeaders getHttpHeaders() {
@@ -116,8 +116,18 @@ public class SessionServiceRequestHandler {
 
     // Use dedicated session.info.url if configured, otherwise fallback to session.service.url +
     // "info"
-    String infoUrl =
-        !StringUtils.isEmpty(sessionInfoURL) ? sessionInfoURL : sessionServiceURL + "info";
+    String infoUrl;
+    if (!StringUtils.isEmpty(sessionInfoURL)) {
+      infoUrl = sessionInfoURL;
+    } else if (!StringUtils.isEmpty(sessionServiceURL)) {
+      infoUrl =
+          sessionServiceURL.endsWith("/")
+              ? sessionServiceURL + "info"
+              : sessionServiceURL + "/info";
+    } else {
+      throw new IllegalStateException(
+          "Unexpected state: Both session.info.url and session.service.url are empty; cannot construct info URL. This should not occur if isSessionInfoServiceEnabled() is checked before calling this method. Please check configuration and call flow.");
+    }
 
     // add basic authentication in header
     HttpEntity<String> headers = new HttpEntity<>(getHttpHeaders());

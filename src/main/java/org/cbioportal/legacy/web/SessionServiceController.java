@@ -178,7 +178,7 @@ public class SessionServiceController {
       responseCode = "200",
       description = "OK",
       content = @Content(schema = @Schema(implementation = Object.class)))
-  public ResponseEntity<Object> getSessionServiceInfo() {
+  public ResponseEntity<String> getSessionServiceInfo() {
 
     if (!sessionServiceRequestHandler.isSessionInfoServiceEnabled()) {
       return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);

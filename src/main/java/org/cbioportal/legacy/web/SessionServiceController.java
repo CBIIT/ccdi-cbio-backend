@@ -42,6 +42,7 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -166,6 +167,30 @@ public class SessionServiceController {
     } catch (IOException e) {
       LOG.error("Error occurred", e);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @RequestMapping(
+      value = "/info",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ApiResponse(
+      responseCode = "200",
+      description = "OK",
+      content = @Content(schema = @Schema(implementation = Object.class)))
+  public ResponseEntity<Object> getSessionServiceInfo() {
+
+    if (!sessionServiceRequestHandler.isSessionInfoServiceEnabled()) {
+      return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    try {
+      String sessionInfoResponse = sessionServiceRequestHandler.getSessionServiceInfo();
+
+      return new ResponseEntity<>(sessionInfoResponse, HttpStatus.OK);
+    } catch (Exception exception) {
+      LOG.error("Error occurred while fetching session service info", exception);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

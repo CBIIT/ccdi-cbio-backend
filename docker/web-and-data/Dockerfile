@@ -11,7 +11,9 @@
 # NOTE: the .git folder is included in the build stage, but excluded 
 # from the final image. No confidential information is exposed.
 # (see: stackoverflow.com/questions/56278325)
-FROM maven:3-eclipse-temurin-21 as build
+# FROM maven:3-eclipse-temurin-21 as build
+FROM maven:3-eclipse-temurin-21 AS build
+
 
 # download maven dependencies first to take advantage of docker caching
 COPY pom.xml                                        /cbioportal/
@@ -26,20 +28,39 @@ COPY $PWD /cbioportal
 RUN mvn install package -DskipTests -q
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*-exec.jar)
 
-FROM eclipse-temurin:21
+# # FROM eclipse-temurin:21
+# FROM eclipse-temurin:21-alpine AS fnl_base_image
 
-# download system dependencies first to take advantage of docker caching
-RUN apt-get update; apt-get install -y --no-install-recommends \
-        build-essential \
-        default-mysql-client \
-        default-libmysqlclient-dev \
-        python3 \
-        python3-setuptools \
-        python3-dev \
-        python3-pip \
-        unzip \
-    && rm -rf /var/lib/apt/lists/*
+# # download system dependencies first to take advantage of docker caching
+# RUN apt-get update; apt-get install -y --no-install-recommends \
+#         build-essential \
+#         default-mysql-client \
+#         default-libmysqlclient-dev \
+#         python3 \
+#         python3-setuptools \
+#         python3-dev \
+#         python3-pip \
+#         unzip \
+#     && rm -rf /var/lib/apt/lists/*
 
+FROM eclipse-temurin:21-alpine AS fnl_base_image
+
+# Install Alpine equivalents of the dependencies
+RUN apk update && apk add --no-cache \
+    build-base \
+    mariadb-client \
+    mariadb-dev \
+    python3 \
+    py3-setuptools \
+    python3-dev \
+    py3-pip \
+    unzip
+
+    
+# Upgrade pip and setuptools to fix CVE
+RUN pip3 install --break-system-packages --upgrade pip && \
+    pip3 install --break-system-packages setuptools==78.1.1
+    
 # copy over core files and data-related scripts
 RUN mkdir -p /cbioportal
 
@@ -50,12 +71,12 @@ RUN wget https://github.com/cBioPortal/cbioportal-core/releases/download/v1.0.11
 COPY --from=build /cbioportal/src/main/resources/db-scripts /cbioportal/db-scripts
 COPY --from=build /cbioportal/test/test_data/study_es_0 /cbioportal/test/study_es_0
 
-# install build and runtime dependencies
-# ignore update failure980[1298[01 w2308s
-RUN  pip3 install --break-system-packages -r /core/requirements.txt
+# # install build and runtime dependencies
+# # ignore update failure980[1298[01 w2308s
+# RUN  pip3 install --break-system-packages -r /core/requirements.txt
 
-# add importer scripts to PATH for easy running in containers
-RUN find /core/scripts/ -type f -executable \! -name '*.pl' -print0 | xargs -0 -- ln -st /usr/local/bin
+# # add importer scripts to PATH for easy running in containers
+# RUN find /core/scripts/ -type f -executable \! -name '*.pl' -print0 | xargs -0 -- ln -st /usr/local/bin
 
 # put config files in this folder if you want to override config
 ENV PORTAL_WEB_HOME=/cbioportal-webapp

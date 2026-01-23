@@ -49,6 +49,9 @@ public class SessionServiceRequestHandler {
   @Value("${session.service.url:}")
   private String sessionServiceURL;
 
+  @Value("${session.info.url:}")
+  private String sessionInfoURL;
+
   @Value("${session.service.user:}")
   private String sessionServiceUser;
 
@@ -63,6 +66,10 @@ public class SessionServiceRequestHandler {
 
   public Boolean isSessionServiceEnabled() {
     return !StringUtils.isEmpty(sessionServiceURL);
+  }
+
+  public Boolean isSessionInfoServiceEnabled() {
+    return !StringUtils.isEmpty(sessionInfoURL) || !StringUtils.isEmpty(sessionServiceURL);
   }
 
   public HttpHeaders getHttpHeaders() {
@@ -95,6 +102,37 @@ public class SessionServiceRequestHandler {
     HttpEntity<String> headers = new HttpEntity<>(getHttpHeaders());
     ResponseEntity<String> responseEntity =
         restTemplate.exchange(url, HttpMethod.GET, headers, String.class);
+
+    return responseEntity.getBody();
+  }
+
+  /**
+   * Gets session service info using dedicated session.info.url property
+   *
+   * @return session service info as JSON string
+   */
+  public String getSessionServiceInfo() throws Exception {
+    RestTemplate restTemplate = new RestTemplate();
+
+    // Use dedicated session.info.url if configured, otherwise fallback to session.service.url +
+    // "info"
+    String infoUrl;
+    if (!StringUtils.isEmpty(sessionInfoURL)) {
+      infoUrl = sessionInfoURL;
+    } else if (!StringUtils.isEmpty(sessionServiceURL)) {
+      infoUrl =
+          sessionServiceURL.endsWith("/")
+              ? sessionServiceURL + "info"
+              : sessionServiceURL + "/info";
+    } else {
+      throw new IllegalStateException(
+          "Unexpected state: Both session.info.url and session.service.url are empty; cannot construct info URL. This should not occur if isSessionInfoServiceEnabled() is checked before calling this method. Please check configuration and call flow.");
+    }
+
+    // add basic authentication in header
+    HttpEntity<String> headers = new HttpEntity<>(getHttpHeaders());
+    ResponseEntity<String> responseEntity =
+        restTemplate.exchange(infoUrl, HttpMethod.GET, headers, String.class);
 
     return responseEntity.getBody();
   }

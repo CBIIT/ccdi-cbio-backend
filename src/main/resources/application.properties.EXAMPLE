@@ -341,7 +341,7 @@ persistence.cache_type=no-cache
 # default_cross_cancer_study_list_name=My list of studies
 
 # Enable/Disable quick search (currently in beta, default is false)
-# quick_search.enabled=true
+quick_search.enabled=true
 
 # enable/disable hrrs logging
 # hrrs can be used for debugging - when enabled incoming web requests
@@ -442,7 +442,7 @@ spring.devtools.restart.enabled=false
 # download_custom_buttons_json=classpath:custom_buttons/download_custom_button_avm.json
 
 # Study Data Export
-feature.study.export=false
+feature.study.export=true
 feature.study.export.timeout_ms=600000
 
 # EOL - Do not delete the following lines

@@ -22,43 +22,43 @@
     </sql>
 
     <!-- JSON path with quoted keys so names containing spaces/special chars (e.g. "Significance System") are valid.
-        Escaping logic: first REPLACE escapes backslashes (\\ -> \\\\) so they are not treated as escape chars,
-        then REPLACE escapes double quotes (" -> \\" ) so the key name does not break the JSON path syntax. -->
-    <sql id="jsonPathEscapeKey">
-        REPLACE(REPLACE(#{${keyParam}}, '\\', '\\\\'), '"', '\\"')
+        Escaping logic: first REPLACE turns each backslash character (`\`) into a double backslash (`\\`) in the JSON path so it is not treated as an escape character,
+        then REPLACE prefixes each double quote (`"`) with a backslash (`\"`) so the key name does not break the JSON path syntax.
+        Explicit fragments per parameter so binding is always direct (#{...}) with no nested substitution. -->
+    <sql id="jsonPathEscapeOuterKey">
+        REPLACE(REPLACE(#{outerKey}, '\\', '\\\\'), '"', '\\"')
+    </sql>
+    <sql id="jsonPathEscapeInnerKey">
+        REPLACE(REPLACE(#{innerKey}, '\\', '\\\\'), '"', '\\"')
+    </sql>
+    <sql id="jsonPathEscapeNamespaceAttributeOuterKey">
+        REPLACE(REPLACE(#{namespaceAttribute.outerKey}, '\\', '\\\\'), '"', '\\"')
+    </sql>
+    <sql id="jsonPathEscapeNamespaceAttributeInnerKey">
+        REPLACE(REPLACE(#{namespaceAttribute.innerKey}, '\\', '\\\\'), '"', '\\"')
     </sql>
     <sql id="jsonPathQuotedOneKey">
         CONCAT(
             '$."',
-            <include refid="jsonPathEscapeKey">
-                <property name="keyParam" value="outerKey"/>
-            </include>,
+            <include refid="jsonPathEscapeOuterKey"/>,
             '"'
         )
     </sql>
     <sql id="jsonPathQuotedTwoKeys">
         CONCAT(
             '$."',
-            <include refid="jsonPathEscapeKey">
-                <property name="keyParam" value="outerKey"/>
-            </include>,
+            <include refid="jsonPathEscapeOuterKey"/>,
             '"."',
-            <include refid="jsonPathEscapeKey">
-                <property name="keyParam" value="innerKey"/>
-            </include>,
+            <include refid="jsonPathEscapeInnerKey"/>,
             '"'
         )
     </sql>
     <sql id="jsonPathQuotedTwoKeysFromAttribute">
         CONCAT(
             '$."',
-            <include refid="jsonPathEscapeKey">
-                <property name="keyParam" value="namespaceAttribute.outerKey"/>
-            </include>,
+            <include refid="jsonPathEscapeNamespaceAttributeOuterKey"/>,
             '"."',
-            <include refid="jsonPathEscapeKey">
-                <property name="keyParam" value="namespaceAttribute.innerKey"/>
-            </include>,
+            <include refid="jsonPathEscapeNamespaceAttributeInnerKey"/>,
             '"'
         )
     </sql>

@@ -21,15 +21,46 @@
         INNER JOIN cancer_study ON patient.CANCER_STUDY_ID = cancer_study.CANCER_STUDY_ID
     </sql>
 
-    <!-- JSON path with quoted keys so names containing spaces/special chars (e.g. "Significance System") are valid -->
+    <!-- JSON path with quoted keys so names containing spaces/special chars (e.g. "Significance System") are valid.
+        Escaping logic: first REPLACE escapes backslashes (\\ -> \\\\) so they are not treated as escape chars,
+        then REPLACE escapes double quotes (" -> \\" ) so the key name does not break the JSON path syntax. -->
+    <sql id="jsonPathEscapeKey">
+        REPLACE(REPLACE(#{${keyParam}}, '\\', '\\\\'), '"', '\\"')
+    </sql>
     <sql id="jsonPathQuotedOneKey">
-        CONCAT('$."', REPLACE(REPLACE(#{outerKey}, '\\', '\\\\'), '"', '\\"'), '"')
+        CONCAT(
+            '$."',
+            <include refid="jsonPathEscapeKey">
+                <property name="keyParam" value="outerKey"/>
+            </include>,
+            '"'
+        )
     </sql>
     <sql id="jsonPathQuotedTwoKeys">
-        CONCAT('$."', REPLACE(REPLACE(#{outerKey}, '\\', '\\\\'), '"', '\\"'), '"."', REPLACE(REPLACE(#{innerKey}, '\\', '\\\\'), '"', '\\"'), '"')
+        CONCAT(
+            '$."',
+            <include refid="jsonPathEscapeKey">
+                <property name="keyParam" value="outerKey"/>
+            </include>,
+            '"."',
+            <include refid="jsonPathEscapeKey">
+                <property name="keyParam" value="innerKey"/>
+            </include>,
+            '"'
+        )
     </sql>
     <sql id="jsonPathQuotedTwoKeysFromAttribute">
-        CONCAT('$."', REPLACE(REPLACE(#{namespaceAttribute.outerKey}, '\\', '\\\\'), '"', '\\"'), '"."', REPLACE(REPLACE(#{namespaceAttribute.innerKey}, '\\', '\\\\'), '"', '\\"'), '"')
+        CONCAT(
+            '$."',
+            <include refid="jsonPathEscapeKey">
+                <property name="keyParam" value="namespaceAttribute.outerKey"/>
+            </include>,
+            '"."',
+            <include refid="jsonPathEscapeKey">
+                <property name="keyParam" value="namespaceAttribute.innerKey"/>
+            </include>,
+            '"'
+        )
     </sql>
 
     <sql id="whereSampleInStudyIds">

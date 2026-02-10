@@ -21,6 +21,48 @@
         INNER JOIN cancer_study ON patient.CANCER_STUDY_ID = cancer_study.CANCER_STUDY_ID
     </sql>
 
+    <!-- JSON path with quoted keys so names containing spaces/special chars (e.g. "Significance System") are valid.
+        Escaping logic: first REPLACE turns each backslash character (`\`) into a double backslash (`\\`) in the JSON path so it is not treated as an escape character,
+        then REPLACE prefixes each double quote (`"`) with a backslash (`\"`) so the key name does not break the JSON path syntax.
+        Explicit fragments per parameter so binding is always direct (#{...}) with no nested substitution. -->
+    <sql id="jsonPathEscapeOuterKey">
+        REPLACE(REPLACE(#{outerKey}, '\\', '\\\\'), '"', '\\"')
+    </sql>
+    <sql id="jsonPathEscapeInnerKey">
+        REPLACE(REPLACE(#{innerKey}, '\\', '\\\\'), '"', '\\"')
+    </sql>
+    <sql id="jsonPathEscapeNamespaceAttributeOuterKey">
+        REPLACE(REPLACE(#{namespaceAttribute.outerKey}, '\\', '\\\\'), '"', '\\"')
+    </sql>
+    <sql id="jsonPathEscapeNamespaceAttributeInnerKey">
+        REPLACE(REPLACE(#{namespaceAttribute.innerKey}, '\\', '\\\\'), '"', '\\"')
+    </sql>
+    <sql id="jsonPathQuotedOneKey">
+        CONCAT(
+            '$."',
+            <include refid="jsonPathEscapeOuterKey"/>,
+            '"'
+        )
+    </sql>
+    <sql id="jsonPathQuotedTwoKeys">
+        CONCAT(
+            '$."',
+            <include refid="jsonPathEscapeOuterKey"/>,
+            '"."',
+            <include refid="jsonPathEscapeInnerKey"/>,
+            '"'
+        )
+    </sql>
+    <sql id="jsonPathQuotedTwoKeysFromAttribute">
+        CONCAT(
+            '$."',
+            <include refid="jsonPathEscapeNamespaceAttributeOuterKey"/>,
+            '"."',
+            <include refid="jsonPathEscapeNamespaceAttributeInnerKey"/>,
+            '"'
+        )
+    </sql>
+
     <sql id="whereSampleInStudyIds">
         <where>
             <if test="sampleIds == null">
@@ -82,7 +124,7 @@
                 <include refid="getNamespaceRows"/>
             </foreach>
         ) combinedAnnotations,
-        json_table(json_keys(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}))),
+        json_table(json_keys(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedOneKey"/>)),
         '$[*]' COLUMNS(innerKey JSON PATH '$')) t;
     </select>
 
@@ -96,8 +138,8 @@
             FROM mutation
             <include refid="joinSampleMutation"/>
             <include refid="whereSampleInStudyIds"/>
-            AND JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{namespaceAttribute.outerKey}, '.', #{namespaceAttribute.innerKey})) IS NOT NULL 
-            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{namespaceAttribute.outerKey}, '.', #{namespaceAttribute.innerKey}))) != 'null'
+            AND JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeysFromAttribute"/>) IS NOT NULL 
+            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeysFromAttribute"/>)) != 'null'
 
             UNION ALL
 
@@ -107,8 +149,8 @@
             FROM structural_variant
             <include refid="joinSampleStructuralVariants"/>
             <include refid="whereSampleInStudyIds"/>
-            AND JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{namespaceAttribute.outerKey}, '.', #{namespaceAttribute.innerKey})) IS NOT NULL 
-            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{namespaceAttribute.outerKey}, '.', #{namespaceAttribute.innerKey}))) != 'null'
+            AND JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeysFromAttribute"/>) IS NOT NULL 
+            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeysFromAttribute"/>)) != 'null'
 
             UNION ALL
 
@@ -118,8 +160,8 @@
             FROM sample_cna_event
             <include refid="joinSampleCNA"/>
             <include refid="whereSampleInStudyIds"/>
-            AND JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{namespaceAttribute.outerKey}, '.', #{namespaceAttribute.innerKey})) IS NOT NULL 
-            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{namespaceAttribute.outerKey}, '.', #{namespaceAttribute.innerKey}))) != 'null'
+            AND JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeysFromAttribute"/>) IS NOT NULL 
+            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeysFromAttribute"/>)) != 'null'
         </foreach>
     ) combinedCounts
     GROUP BY outerKey, innerKey;
@@ -134,48 +176,48 @@
             COUNT(SAMPLE_ID) AS totalCount
         FROM (
             SELECT 
-                JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey}))) AS value,
+                JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>)) AS value,
                 #{outerKey} AS outerKey,
                 #{innerKey} AS innerKey,
                 SAMPLE_ID AS SAMPLE_ID
             FROM mutation
             <include refid="joinSampleMutation"/>
             <include refid="whereSampleInStudyIds"/>
-            AND JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey})) IS NOT NULL 
-            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey}))) != 'null'
+            AND JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>) IS NOT NULL 
+            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>)) != 'null'
 
             UNION ALL
 
             SELECT 
-                JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey}))) AS value,
+                JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>)) AS value,
                 #{outerKey} AS outerKey,
                 #{innerKey} AS innerKey,
                 SAMPLE_ID AS SAMPLE_ID
             FROM structural_variant
             <include refid="joinSampleStructuralVariants"/>
             <include refid="whereSampleInStudyIds"/>
-            AND JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey})) IS NOT NULL 
-            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey}))) != 'null'
+            AND JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>) IS NOT NULL 
+            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>)) != 'null'
 
             UNION ALL
 
             SELECT 
-                JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey}))) AS value,
+                JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>)) AS value,
                 #{outerKey} AS outerKey,
                 #{innerKey} AS innerKey,
                 SAMPLE_ID AS SAMPLE_ID
             FROM sample_cna_event
             <include refid="joinSampleCNA"/>
             <include refid="whereSampleInStudyIds"/>
-            AND JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey})) IS NOT NULL 
-            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey}))) != 'null'
+            AND JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>) IS NOT NULL 
+            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>)) != 'null'
         ) combinedCounts
         GROUP BY value, outerKey, innerKey;
     </select>
 
     <select id="getNamespaceData" resultType="org.cbioportal.legacy.model.NamespaceData">
     SELECT 
-        DISTINCT(JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey})))) AS attrValue,
+        DISTINCT(JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>))) AS attrValue,
         #{outerKey} AS outerKey,
         #{innerKey} AS innerKey,
         studyId AS studyId,
@@ -200,7 +242,7 @@
         <include refid="joinSampleCNA"/>
         <include refid="whereSampleInStudyIds"/>
         ) combinedNamespaceData
-        WHERE JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey})) IS NOT NULL;
+        WHERE JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>) IS NOT NULL;
     </select>
 
 
@@ -217,7 +259,7 @@
             FROM mutation
             <include refid="joinSampleMutation"/>
             <include refid="whereSampleInStudyIds"/>
-            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey}))) = #{value}
+            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>)) = #{value}
 
             UNION ALL
 
@@ -225,7 +267,7 @@
             FROM structural_variant
             <include refid="joinSampleStructuralVariants"/>
             <include refid="whereSampleInStudyIds"/>
-            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey}))) = #{value}
+            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>)) = #{value}
 
             UNION ALL
 
@@ -233,7 +275,7 @@
             FROM sample_cna_event
             <include refid="joinSampleCNA"/>
             <include refid="whereSampleInStudyIds"/>
-            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, CONCAT('$.', #{outerKey}, '.', #{innerKey}))) = #{value}
+            AND JSON_UNQUOTE(JSON_EXTRACT(ANNOTATION_JSON, <include refid="jsonPathQuotedTwoKeys"/>)) = #{value}
         ) combinedNamespaceData
         GROUP BY sampleId, studyId, patientId;
     </select>

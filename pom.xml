@@ -444,6 +444,12 @@
         <artifactId>velocity-engine-core</artifactId>
         <version>${velocity.version}</version>
       </dependency>
+      <!-- Force Okio to patched version for CVE-2023-3635 (GzipSource DoS); applies if pulled in transitively -->
+      <dependency>
+        <groupId>com.squareup.okio</groupId>
+        <artifactId>okio</artifactId>
+        <version>3.9.0</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

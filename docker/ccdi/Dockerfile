@@ -71,7 +71,8 @@ RUN apk update && apk add --no-cache \
     unzip \
     sqlite-libs \
     krb5 \
-    && apk upgrade --no-cache libpng
+    # Upgrade libpng (CVE-2026-25646) and all packages e.g. gnutls (CVE-2025-14831)
+    && apk upgrade --no-cache
 
 # Upgrade pip and setuptools to fix CVE
 RUN pip3 install --break-system-packages --upgrade pip && \

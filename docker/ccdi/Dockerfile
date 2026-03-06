@@ -41,7 +41,8 @@ RUN mvn install package -DskipTests -q
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*-exec.jar)
 
 # FROM eclipse-temurin:21
-FROM eclipse-temurin:21-alpine AS fnl_base_image
+# Use Alpine 3.20+ for libpng 1.6.55+ (CVE-2026-25646)
+FROM eclipse-temurin:21-alpine-3.23 AS fnl_base_image
 
 # # download system dependencies first to take advantage of docker caching
 # RUN apt-get update; apt-get install -y --no-install-recommends \
@@ -69,7 +70,9 @@ RUN apk update && apk add --no-cache \
     py3-pip \
     unzip \
     sqlite-libs \
-    krb5
+    krb5 \
+    # Upgrade libpng (CVE-2026-25646) and all packages e.g. gnutls (CVE-2025-14831)
+    && apk upgrade --no-cache
 
 # Upgrade pip and setuptools to fix CVE
 RUN pip3 install --break-system-packages --upgrade pip && \

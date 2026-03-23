@@ -60,25 +60,27 @@ FROM eclipse-temurin:21-alpine-3.23 AS fnl_base_image
 #     && rm -rf /var/lib/apt/lists/*\
 #     && pip3 install --break-system-packages setuptools>=68.0.0
 
-RUN apk update && apk add --no-cache \
-    build-base \
-    mysql-client \
-    mariadb-dev \
-    python3 \
-    py3-setuptools \
-    python3-dev \
-    py3-pip \
-    unzip \
-    sqlite-libs \
-    krb5 \
-    # Upgrade libpng (CVE-2026-25646) and all packages e.g. gnutls (CVE-2025-14831)
-    && apk upgrade --no-cache
+RUN apk update && apk upgrade --no-cache
 
-# Upgrade pip and setuptools to fix CVE
-RUN pip3 install --break-system-packages --upgrade pip && \
-    pip3 install --break-system-packages setuptools==78.1.1
-# Explicitly upgrade wheel to fix CVE-2026-24049 (path traversal in unpack); jaraco.context for CVE-2026-23949
-RUN pip3 install --break-system-packages --upgrade "wheel>=0.46.2" "jaraco.context>=6.1.0"
+# RUN apk update && apk add --no-cache \
+#     build-base \
+#     mysql-client \
+#     mariadb-dev \
+#     python3 \
+#     py3-setuptools \
+#     python3-dev \
+#     py3-pip \
+#     unzip \
+#     sqlite-libs \
+#     krb5 \
+#     # Upgrade libpng (CVE-2026-25646) and all packages e.g. gnutls (CVE-2025-14831)
+#     && apk upgrade --no-cache
+
+# # Upgrade pip and setuptools to fix CVE
+# RUN pip3 install --break-system-packages --upgrade pip && \
+#     pip3 install --break-system-packages setuptools==78.1.1
+# # Explicitly upgrade wheel to fix CVE-2026-24049 (path traversal in unpack); jaraco.context for CVE-2026-23949
+# RUN pip3 install --break-system-packages --upgrade "wheel>=0.46.2" "jaraco.context>=6.1.0"
 
 # copy over core files and data-related scripts
 RUN mkdir -p /cbioportal

@@ -112,6 +112,12 @@
     <!-- CVE-2025-48924: commons-lang3 ClassUtils.getClass() uncontrolled recursion / StackOverflowError -->
     <commons-lang3.version>3.18.0</commons-lang3.version>
 
+    <!-- CVE-2026-22732: Spring Security servlet HTTP security headers not written under certain conditions -->
+    <spring-security.version>6.5.9</spring-security.version>
+
+    <!-- CVE-2026-22737: Spring Framework improper path limitation with script view templates; fixed in 6.2.17+ -->
+    <spring-framework.version>6.2.17</spring-framework.version>
+
     <!-- No sure what these are for -->
     <bundle.symbolicName.prefix>org.mskcc</bundle.symbolicName.prefix>
     <bundle.namespace>org.mskcc.mondrian</bundle.namespace>

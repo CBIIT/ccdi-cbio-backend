@@ -41,7 +41,7 @@ RUN mvn install package -DskipTests -q
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*-exec.jar)
 
 # FROM eclipse-temurin:21
-# Use Alpine 3.20+ for libpng 1.6.55+ (CVE-2026-25646)
+# Use Alpine 3.20+ for libpng 1.6.55+ (CVE-2026-25646); 1.6.56+ for CVE-2026-33636
 FROM eclipse-temurin:21-alpine-3.23 AS fnl_base_image
 
 # # download system dependencies first to take advantage of docker caching
@@ -60,23 +60,30 @@ FROM eclipse-temurin:21-alpine-3.23 AS fnl_base_image
 #     && rm -rf /var/lib/apt/lists/*\
 #     && pip3 install --break-system-packages setuptools>=68.0.0
 
-RUN apk update && apk add --no-cache \
-    build-base \
-    mysql-client \
-    mariadb-dev \
-    python3 \
-    py3-setuptools \
-    python3-dev \
-    py3-pip \
-    unzip \
-    sqlite-libs \
-    krb5 \
-    # Upgrade libpng (CVE-2026-25646) and all packages e.g. gnutls (CVE-2025-14831)
-    && apk upgrade --no-cache
+# Explicit libpng: apk upgrade alone can be satisfied by a cached layer with an old index;
+# 1.6.56+ fixes CVE-2026-33636 (Alpine 3.23 main ships libpng-1.6.56-r0).
+RUN apk update && apk upgrade --no-cache \
+    && apk add --no-cache --upgrade libpng
 
-# Upgrade pip and setuptools to fix CVE
-RUN pip3 install --break-system-packages --upgrade pip && \
-    pip3 install --break-system-packages setuptools==78.1.1
+# RUN apk update && apk add --no-cache \
+#     build-base \
+#     mysql-client \
+#     mariadb-dev \
+#     python3 \
+#     py3-setuptools \
+#     python3-dev \
+#     py3-pip \
+#     unzip \
+#     sqlite-libs \
+#     krb5 \
+#     # Upgrade libpng (CVE-2026-25646) and all packages e.g. gnutls (CVE-2025-14831)
+#     && apk upgrade --no-cache
+
+# # Upgrade pip and setuptools to fix CVE
+# RUN pip3 install --break-system-packages --upgrade pip && \
+#     pip3 install --break-system-packages setuptools==78.1.1
+# # Explicitly upgrade wheel to fix CVE-2026-24049 (path traversal in unpack); jaraco.context for CVE-2026-23949
+# RUN pip3 install --break-system-packages --upgrade "wheel>=0.46.2" "jaraco.context>=6.1.0"
 
 # copy over core files and data-related scripts
 RUN mkdir -p /cbioportal

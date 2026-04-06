@@ -39,7 +39,7 @@ server.compression.enabled=true
 # db.tomcat_resource_name=jdbc/cbioportal
 
 # web page cosmetics
-skin.title=cBioPortal for Cancer Genomics
+skin.title=CCDI cBioPortal
 skin.email_contact=NCIChildhoodCancerDataInitiative@mail.nih.gov
 skin.authorization_message=Access to this portal is only available to authorized users at Memorial Sloan Kettering Cancer Center.  [<a href="http://bit.ly/ZevaHa">Request Access</a>].
 skin.example_study_queries=tcga\ntcga -provisional\ntcga -moratorium\ntcga OR icgc\n-"cell line"\nprostate mskcc\nesophageal OR stomach\nserous\nbreast
@@ -337,7 +337,7 @@ persistence.cache_type=no-cache
 # if session service is not enabled, specify a comma separated list of studies
 # here instead e.g.:
 #
-default_cross_cancer_study_list=phs002790,openpedcan_v15,pstPDX_uthsa_2023
+default_cross_cancer_study_list=phs002790,openpedcan_v15,pstPDX_uthsa_2023,pedmatch_phs002883
 default_cross_cancer_study_list_name=Pediatric Cancer studies
 
 # Enable/Disable quick search (currently in beta, default is false)
@@ -399,7 +399,7 @@ enable_request_body_gzip_compression=true
 
 # Set StudyDownloadLinkUrl
 # Allows download links within DataSets Tab (See application.properties documentation for more info)
-# study_download_url=
+study_download_url=https://d1pct54nekswp0.cloudfront.net/
 
 # download_group=
 
@@ -442,7 +442,7 @@ spring.devtools.restart.enabled=false
 # download_custom_buttons_json=classpath:custom_buttons/download_custom_button_avm.json
 
 # Study Data Export
-feature.study.export=true
+feature.study.export=false
 feature.study.export.timeout_ms=600000
 
 # EOL - Do not delete the following lines

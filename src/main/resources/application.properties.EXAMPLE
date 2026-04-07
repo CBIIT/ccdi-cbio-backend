@@ -399,7 +399,7 @@ enable_request_body_gzip_compression=true
 
 # Set StudyDownloadLinkUrl
 # Allows download links within DataSets Tab (See application.properties documentation for more info)
-study_download_url=https://d1pct54nekswp0.cloudfront.net/
+study_download_url=https://dbvxetp5dzc2e.cloudfront.net/
 
 # download_group=
 

@@ -31,6 +31,7 @@ COPY $PWD /cbioportal
 # Copy properties files from default
 RUN mv /cbioportal/src/main/resources/application.properties.EXAMPLE /cbioportal/src/main/resources/application.properties
 RUN mv /cbioportal/src/main/resources/log4j.properties.EXAMPLE /cbioportal/src/main/resources/log4j.properties
+RUN mv /cbioportal/src/main/resources/springdoc.properties /cbioportal/src/main/resources/springdoc.properties
 RUN mv /cbioportal/src/main/resources/security.properties.EXAMPLE /cbioportal/src/main/resources/security.properties \
     && echo -e "\nsecurity.cors.allowed-origins=*" >> /cbioportal/src/main/resources/security.properties
 

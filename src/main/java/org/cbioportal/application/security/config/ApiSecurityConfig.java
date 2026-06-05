@@ -48,6 +48,10 @@ public class ApiSecurityConfig {
                     .requestMatchers(
                         "/api/swagger-resources/**",
                         "/api/swagger-ui.html",
+                        "/api/swagger-ui",
+                        "/api/swagger-ui/**",
+                        "/api/v3/api-docs",
+                        "/api/v3/api-docs/**",
                         "/api/health",
                         "/api/public_virtual_studies/**",
                         "/api/cache/**")

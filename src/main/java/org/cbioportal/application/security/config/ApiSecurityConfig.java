@@ -46,6 +46,7 @@ public class ApiSecurityConfig {
             authorize ->
                 authorize
                     .requestMatchers(
+                        "/api",
                         "/api/swagger-resources/**",
                         "/api/swagger-ui.html",
                         "/api/swagger-ui",

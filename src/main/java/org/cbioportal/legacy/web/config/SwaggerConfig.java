@@ -78,8 +78,8 @@ public class SwaggerConfig {
                     .description("SpringShop Wiki Documentation")
                     .url("https://springshop.wiki.github.org/docs"));
 
-    if (StringUtils.hasText(serverUrl)) {
-      String normalizedServerUrl = serverUrl.trim().replaceAll("/+$", "");
+    String normalizedServerUrl = serverUrl.trim().replaceAll("/+$", "");
+    if (StringUtils.hasText(normalizedServerUrl)) {
       openAPI.servers(List.of(new Server().url(normalizedServerUrl)));
     }
 

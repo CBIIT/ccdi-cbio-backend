@@ -8,14 +8,18 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
 import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.stream.Stream;
 import org.cbioportal.legacy.web.config.annotation.InternalApi;
 import org.cbioportal.legacy.web.config.annotation.PublicApi;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
@@ -46,30 +50,40 @@ public class SwaggerConfig {
   }
 
   @Bean
-  public OpenAPI springShopOpenAPI(ObjectMapper customObjectMapper) {
+  public OpenAPI springShopOpenAPI(
+      ObjectMapper customObjectMapper,
+      @Value("${springdoc.api-docs.server-url:}") String serverUrl) {
     ModelConverters.getInstance().addConverter(new ModelResolver(customObjectMapper));
-    return new OpenAPI()
-        .info(
-            new Info()
-                .title("cBioPortal web Public API [Alpha]")
-                .description(
-                    "A web service for supplying JSON formatted data to cBioPortal clients. "
-                        + "Please note that this API is currently in beta and subject to change.")
-                .version(
-                    "1.0 (beta). Backwards compatibility will be maintained (after 1.0 release)")
-                .license(
-                    new License()
-                        .name("License")
-                        .url("https://github.com/cBioPortal/cbioportal/blob/master/LICENSE"))
-                .contact(
-                    new Contact()
-                        .name("cbioportal")
-                        .url("https://www.cbioportal.org")
-                        .email("cbioportal@googlegroups.com")))
-        .externalDocs(
-            new ExternalDocumentation()
-                .description("SpringShop Wiki Documentation")
-                .url("https://springshop.wiki.github.org/docs"));
+    OpenAPI openAPI =
+        new OpenAPI()
+            .info(
+                new Info()
+                    .title("cBioPortal web Public API [Alpha]")
+                    .description(
+                        "A web service for supplying JSON formatted data to cBioPortal clients. "
+                            + "Please note that this API is currently in beta and subject to change.")
+                    .version(
+                        "1.0 (beta). Backwards compatibility will be maintained (after 1.0 release)")
+                    .license(
+                        new License()
+                            .name("License")
+                            .url("https://github.com/cBioPortal/cbioportal/blob/master/LICENSE"))
+                    .contact(
+                        new Contact()
+                            .name("cbioportal")
+                            .url("https://www.cbioportal.org")
+                            .email("cbioportal@googlegroups.com")))
+            .externalDocs(
+                new ExternalDocumentation()
+                    .description("SpringShop Wiki Documentation")
+                    .url("https://springshop.wiki.github.org/docs"));
+
+    if (StringUtils.hasText(serverUrl)) {
+      String normalizedServerUrl = serverUrl.trim().replaceAll("/+$", "");
+      openAPI.servers(List.of(new Server().url(normalizedServerUrl)));
+    }
+
+    return openAPI;
   }
 
   @Bean

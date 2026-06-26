@@ -40,7 +40,7 @@ public class InfoController {
   @Value("${git.branch:not set}")
   private String gitBranch;
 
-  @Value("${git.dirty:not set}")
+  @Value("${git.dirty:false}")
   private String gitDirty;
 
   @RequestMapping(
@@ -75,7 +75,7 @@ public class InfoController {
     if (dbVersion != null) info.setDbVersion(dbVersion);
     if (derivedTableVersion != null) info.setDerivedTableVersion(derivedTableVersion);
     info.setGitBranch(gitBranch);
-    info.isGitDirty(Boolean.valueOf(gitDirty));
+    info.setGitDirty(Boolean.valueOf(gitDirty));
     return new ResponseEntity<>(info, HttpStatus.OK);
   }
 }

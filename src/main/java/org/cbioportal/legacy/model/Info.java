@@ -24,7 +24,7 @@ public class Info implements Serializable {
     return this.gitDirty;
   }
 
-  public void isGitDirty(Boolean gitDirty) {
+  public void setGitDirty(Boolean gitDirty) {
     this.gitDirty = gitDirty;
   }
 

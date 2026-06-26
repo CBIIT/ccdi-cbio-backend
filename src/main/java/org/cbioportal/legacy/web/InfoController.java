@@ -40,30 +40,6 @@ public class InfoController {
   @Value("${git.branch:not set}")
   private String gitBranch;
 
-  @Value("${git.commit.id.full:not set}")
-  private String gitCommitId;
-
-  @Value("${git.commit.id.abbrev:not set}")
-  private String gitCommitIdAbbrev;
-
-  @Value("${git.commit.id.describe:not set}")
-  private String gitCommitIdDescribe;
-
-  @Value("${git.commit.id.describe-short:not set}")
-  private String gitCommitIdDescribeShort;
-
-  @Value("${git.commit.message.full:not set}")
-  private String gitCommitMessageFull;
-
-  @Value("${git.commit.message.short:not set}")
-  private String gitCommitMessageShort;
-
-  @Value("${git.commit.user.email:not set}")
-  private String gitCommitMessageUserEmail;
-
-  @Value("${git.commit.user.name:not set}")
-  private String gitCommitMessageUserName;
-
   @Value("${git.dirty:not set}")
   private String gitDirty;
 
@@ -99,13 +75,6 @@ public class InfoController {
     if (dbVersion != null) info.setDbVersion(dbVersion);
     if (derivedTableVersion != null) info.setDerivedTableVersion(derivedTableVersion);
     info.setGitBranch(gitBranch);
-    info.setGitCommitId(gitCommitId);
-    info.setGitCommitIdDescribe(gitCommitIdDescribe);
-    info.setGitCommitIdDescribeShort(gitCommitIdDescribeShort);
-    info.setGitCommitMessageShort(gitCommitMessageShort);
-    info.setGitCommitMessageFull(gitCommitMessageFull);
-    info.setGitCommitMessageUserEmail(gitCommitMessageUserEmail);
-    info.setGitCommitMessageUserName(gitCommitMessageUserName);
     info.isGitDirty(Boolean.valueOf(gitDirty));
     return new ResponseEntity<>(info, HttpStatus.OK);
   }

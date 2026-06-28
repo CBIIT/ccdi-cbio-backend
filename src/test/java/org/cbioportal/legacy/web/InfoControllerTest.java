@@ -26,7 +26,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
     properties = {
       "portal.version=test_portal_version",
       "db.version=test_db_version",
-      "derived_table.version=test_derived_table_version"
+      "derived_table.version=test_derived_table_version",
+      "git.branch=test_git_branch",
+      "git.dirty=false"
     })
 public class InfoControllerTest {
 
@@ -46,7 +48,9 @@ public class InfoControllerTest {
         .andExpect(MockMvcResultMatchers.jsonPath("$.dbVersion").value("test_db_version"))
         .andExpect(
             MockMvcResultMatchers.jsonPath("$.derivedTableVersion")
-                .value("test_derived_table_version"));
+                .value("test_derived_table_version"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.gitBranch").value("test_git_branch"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.gitDirty").value(false));
   }
 
   @Test

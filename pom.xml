@@ -105,8 +105,8 @@
     <tomcat.version>10.1.56</tomcat.version>
     <velocity.version>2.4</velocity.version>
 
-    <!-- CVE-2025-11226, CVE-2026-1225: logback-core ACE via config; fixed in 1.5.25+ -->
-    <logback.version>1.5.25</logback.version>
+    <!-- CVE-2026-9828: logback-core HardenedObjectInputStream deserialization allowlist bypass; fixed in 1.5.33+ -->
+    <logback.version>1.5.33</logback.version>
 
     <!-- CVE-2025-48924: commons-lang3 ClassUtils.getClass() uncontrolled recursion / StackOverflowError -->
     <commons-lang3.version>3.18.0</commons-lang3.version>

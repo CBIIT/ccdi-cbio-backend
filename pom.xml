@@ -471,16 +471,6 @@
         <version>${velocity.version}</version>
       </dependency>
       <!-- GHSA-72hv-8253-57qq: jackson-core async parser maxNumberLength bypass DoS; fixed in 2.21.1 -->
-      <!-- <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson.version}</version>
-      </dependency> -->
       <dependency>
         <groupId>com.fasterxml.jackson</groupId>
         <artifactId>jackson-bom</artifactId>

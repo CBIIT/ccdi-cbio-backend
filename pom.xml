@@ -102,7 +102,7 @@
     <bouncy_castle.version>1.84</bouncy_castle.version>
     <mapstruct.version>1.6.3</mapstruct.version>
     <!-- CVE-2026-55276: incomplete effective web.xml logging. Fixed in 10.1.56+ -->
-    <tomcat.version>10.1.56</tomcat.version>
+    <tomcat.version>10.1.57</tomcat.version>
     <velocity.version>2.4</velocity.version>
 
     <!-- CVE-2026-9828: logback-core HardenedObjectInputStream deserialization allowlist bypass; fixed in 1.5.33+ -->

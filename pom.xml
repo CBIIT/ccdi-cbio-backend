@@ -38,7 +38,7 @@
     <spring.social.version>1.1.6.RELEASE</spring.social.version>
 
     <!-- GHSA-72hv-8253-57qq: jackson-core async parser DoS; 2.21.1+ -->
-    <jackson.version>2.21.1</jackson.version>
+    <jackson.version>2.21.4</jackson.version>
     <mysql-connector.version>8.0.28</mysql-connector.version>
     <mysql.version>8.2.0</mysql.version>
     <springfox.version>3.0.0</springfox.version>
@@ -98,15 +98,15 @@
     <selenium.version>4.31.0</selenium.version>
     <sentry.version>7.1.0</sentry.version>
     <clickhouse_testcontainer.version>1.19.7</clickhouse_testcontainer.version>
-    <!-- CVE-2025-8916: Bouncy Castle bcpkix/bcprov excessive resource allocation in PKIXCertPathReviewer -->
-    <bouncy_castle.version>1.79</bouncy_castle.version>
+    <!-- CVE-2025-8916 / CVE-2025-14813: Bouncy Castle fixes -->
+    <bouncy_castle.version>1.84</bouncy_castle.version>
     <mapstruct.version>1.6.3</mapstruct.version>
     <!-- CVE-2026-55276: incomplete effective web.xml logging. Fixed in 10.1.56+ -->
     <tomcat.version>10.1.56</tomcat.version>
     <velocity.version>2.4</velocity.version>
 
     <!-- CVE-2026-9828: logback-core HardenedObjectInputStream deserialization allowlist bypass; fixed in 1.5.33+ -->
-    <logback.version>1.5.33</logback.version>
+    <logback.version>1.5.35</logback.version>
 
     <!-- CVE-2025-48924: commons-lang3 ClassUtils.getClass() uncontrolled recursion / StackOverflowError -->
     <commons-lang3.version>3.18.0</commons-lang3.version>
@@ -474,6 +474,11 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
         <version>${jackson.version}</version>
       </dependency>
     </dependencies>

@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.5.6</version>
+    <version>3.5.14</version>
   </parent>
 
   <groupId>io.github.cbioportal</groupId>
@@ -38,7 +38,7 @@
     <spring.social.version>1.1.6.RELEASE</spring.social.version>
 
     <!-- GHSA-72hv-8253-57qq: jackson-core async parser DoS; 2.21.1+ -->
-    <jackson.version>2.21.1</jackson.version>
+    <jackson.version>2.21.5</jackson.version>
     <mysql-connector.version>8.0.28</mysql-connector.version>
     <mysql.version>8.2.0</mysql.version>
     <springfox.version>3.0.0</springfox.version>
@@ -98,25 +98,28 @@
     <selenium.version>4.31.0</selenium.version>
     <sentry.version>7.1.0</sentry.version>
     <clickhouse_testcontainer.version>1.19.7</clickhouse_testcontainer.version>
-    <!-- CVE-2025-8916: Bouncy Castle bcpkix/bcprov excessive resource allocation in PKIXCertPathReviewer -->
-    <bouncy_castle.version>1.79</bouncy_castle.version>
+    <!-- CVE-2025-8916 / CVE-2025-14813: Bouncy Castle fixes -->
+    <bouncy_castle.version>1.84</bouncy_castle.version>
     <mapstruct.version>1.6.3</mapstruct.version>
-    <!-- CVE-2025-61795, CVE-2025-66614, CVE-2026-24733: Tomcat multipart; SNI/host cert bypass; HTTP/0.9 bypass. Fixed in 10.1.50+ -->
-    <!-- CVE-2026-24734: Tomcat/Tomcat Native OCSP response verification bypass (revoked certs accepted). Fixed in 10.1.52+ -->
-    <tomcat.version>10.1.52</tomcat.version>
+    <!-- CVE-2026-55276: incomplete effective web.xml logging. Fixed in 10.1.56+ -->
+    <tomcat.version>10.1.57</tomcat.version>
     <velocity.version>2.4</velocity.version>
 
-    <!-- CVE-2025-11226, CVE-2026-1225: logback-core ACE via config; fixed in 1.5.25+ -->
-    <logback.version>1.5.25</logback.version>
+    <!-- CVE-2026-9828: logback-core HardenedObjectInputStream deserialization allowlist bypass; fixed in 1.5.33+ -->
+    <logback.version>1.5.35</logback.version>
 
     <!-- CVE-2025-48924: commons-lang3 ClassUtils.getClass() uncontrolled recursion / StackOverflowError -->
     <commons-lang3.version>3.18.0</commons-lang3.version>
 
     <!-- CVE-2026-22732: Spring Security servlet HTTP security headers not written under certain conditions -->
-    <spring-security.version>6.5.9</spring-security.version>
+    <!-- CVE-2026-47838: X.509 SubjectDn CN parsing allows user impersonation; fixed in 6.5.11+ -->
+    <spring-security.version>6.5.11</spring-security.version>
 
-    <!-- CVE-2026-22737: Spring Framework improper path limitation with script view templates; fixed in 6.2.17+ -->
-    <spring-framework.version>6.2.17</spring-framework.version>
+    <!-- CVE-2026-41851: SpEL unbounded cache DoS; fixed in 6.2.19+ -->
+    <spring-framework.version>6.2.19</spring-framework.version>
+
+    <!-- CVE-2026-50010: Netty TLS hostname verification bypass; fixed in 4.1.135+ -->
+    <netty.version>4.1.135.Final</netty.version>
 
     <!-- No sure what these are for -->
     <bundle.symbolicName.prefix>org.mskcc</bundle.symbolicName.prefix>
@@ -445,6 +448,13 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-bom</artifactId>
+        <version>${netty.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcpkix-jdk18on</artifactId>
         <version>${bouncy_castle.version}</version>
@@ -462,9 +472,11 @@
       </dependency>
       <!-- GHSA-72hv-8253-57qq: jackson-core async parser maxNumberLength bypass DoS; fixed in 2.21.1 -->
       <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

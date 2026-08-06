@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.5.14</version>
+    <version>3.5.16</version>
   </parent>
 
   <groupId>io.github.cbioportal</groupId>
@@ -118,8 +118,8 @@
     <!-- CVE-2026-41851: SpEL unbounded cache DoS; fixed in 6.2.19+ -->
     <spring-framework.version>6.2.19</spring-framework.version>
 
-    <!-- CVE-2026-50010: Netty TLS hostname verification bypass; fixed in 4.1.135+ -->
-    <netty.version>4.1.135.Final</netty.version>
+    <!-- CVE-2026-50010 + CVE-2026-59901: Netty fixes; use 4.1.136+ -->
+    <netty.version>4.1.136.Final</netty.version>
 
     <!-- No sure what these are for -->
     <bundle.symbolicName.prefix>org.mskcc</bundle.symbolicName.prefix>

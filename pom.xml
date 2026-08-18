@@ -478,6 +478,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- CVE-2026-49844: pin log4j-api to a fixed version -->
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-api</artifactId>

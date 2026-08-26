@@ -120,11 +120,13 @@ When this command executes -- it does so from the path `/` within the container.
 
 > **Note:** If the validator detects any critical errors with the data, those must be fixed before the study can be imported.
 
-> :warning: **Warning:** When importing large studies, you may run into a Java out-of-memory error on machines with limited RAM. You can try adjusting the Java heap size used by the importer in order to work around this, for example:
+> :warning: **Warning:** Large studies can exhaust the importer's Java heap, which shows up as `java.lang.OutOfMemoryError: Java heap space` or as the process being killed with exit code 137. Raise the heap with `-jvo`, which passes options through to the JVM:
 >
+> ```bash
+> docker compose exec cbioportal metaImport.py -s /study/your_study -o -jvo "-Xmx8g"
 > ```
-> docker compose exec cbioportal metaImport.py -s /study/your_study -o -jvo "-Xms16g -Xmx96g"
-> ```
+>
+> `-Xmx8g` is a reasonable starting point. For larger studies on larger machines, you may want to set the memory limit even higher.
 
 All public studies can be downloaded from [cbioportal.org/datasets](https://www.cbioportal.org/datasets) or [github.com/cBioPortal/datahub](https://github.com/cBioPortal/datahub). Add any study to the `./study` folder and import it. The `./study/init.sh` script can download multiple studies at once — set `DATAHUB_STUDIES` to any public study ID (e.g. `lgg_ucsf_2014`) and run `./init.sh`.
 
@@ -145,6 +147,12 @@ For a full overview of available properties — custom logos, external databases
 **Memory:** On systems with 4 GiB or more to spare, set `-Xms` and `-Xmx` to the same value in `docker-compose.yml` to improve performance of memory-intensive features (e.g. the co-expression tab). If you are on macOS or Windows, see [Notes for non-Linux systems](notes-for-non-linux.md) for how to increase memory allocated to the Docker VM.
 
 **OncoKB:** To enable OncoKB annotations, obtain a data access token via [OncoKB Data Access](/deployment/integration-with-other-webservices/OncoKB-Data-Access.md) and add it to `application.properties`.
+
+### Clickhouse Cloud
+
+<a href="https://clickhouse.com/cloud"><img src="../../images/clickhouse-logo.svg" alt="ClickHouse" height="40" /></a>
+
+The Clickhouse setup mentioned above is fully compatible with a remote Clickhouse database. For production environments, one can use Clickhouse as a managed service via [Clickhouse Cloud](https://clickhouse.com/cloud) — it removes the operational overhead of running and scaling Clickhouse yourself. Update the clickhouse database credentials in the [.env](https://github.com/cBioPortal/cbioportal-docker-compose/blob/master/.env) to match your Clickhouse Cloud database credentials. For the clickhouse sync step to work properly, your credentials should have both `read` and `write` permissions.
 
 ## Further Reading
 

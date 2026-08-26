@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.838732325586">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.841069310137">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -15,7 +15,7 @@
     <!-- Primary Meta Tags -->
     <title>cBioPortal Backend Code Organization</title>
     <meta name="title" content="cBioPortal Backend Code Organization">
-    <meta name="description" content="Note: This documentation was written for an earlier version of cBioPortal. The information presented here may not apply to cBioPortal v7 and onwards.">
+    <meta name="description" content="The cBioPortal backend is a single-module Spring Boot application built with Maven. The current codebase uses package-based boundaries instead of the older multi-module layout.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://docs.cbioportal.org/development/backend-code-organization/">
@@ -25,11 +25,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://docs.cbioportal.org/development/backend-code-organization/">
     <meta property="og:title" content="cBioPortal Backend Code Organization">
-    <meta property="og:description" content="Note: This documentation was written for an earlier version of cBioPortal. The information presented here may not apply to cBioPortal v7 and onwards.">
-    <meta property="og:image" content="https://docs.cbioportal.org/images/maven-module-dependencies.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="cBioPortal Backend Code Organization">
+    <meta property="og:description" content="The cBioPortal backend is a single-module Spring Boot application built with Maven. The current codebase uses package-based boundaries instead of the older multi-module layout.">
     <meta property="og:site_name" content="cBioPortal Docs">
     <meta property="og:locale" content="en_US">
 
@@ -37,9 +33,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://docs.cbioportal.org/development/backend-code-organization/">
     <meta name="twitter:title" content="cBioPortal Backend Code Organization">
-    <meta name="twitter:description" content="Note: This documentation was written for an earlier version of cBioPortal. The information presented here may not apply to cBioPortal v7 and onwards.">
-    <meta name="twitter:image" content="https://docs.cbioportal.org/images/maven-module-dependencies.png">
-    <meta name="twitter:image:alt" content="cBioPortal Backend Code Organization">
+    <meta name="twitter:description" content="The cBioPortal backend is a single-module Spring Boot application built with Maven. The current codebase uses package-based boundaries instead of the older multi-module layout.">
 
     <!-- Alternate Markdown -->
     <link rel="alternate" type="text/markdown" href="https://docs.cbioportal.org/development/backend-code-organization.md">
@@ -47,11 +41,11 @@
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
     <link id="retype-favicon" rel="icon" href="../../images/cbio-logo.png" />
-    <link href="../../resources/css/retype.css?v=4.6.0.838732325586" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.6.0.841069310137" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.838732325586" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.841069310137" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.838732325586" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.841069310137" data-turbo-eval="false" defer></script>
 
     <link rel="stylesheet" href="/static/custom.css"></link>
 </head>
@@ -232,153 +226,160 @@
                 <doc-page-actions></doc-page-actions>
 
                 <!-- Page content  -->
-<blockquote>
-<p><strong>Note:</strong> This documentation was written for an earlier version of cBioPortal. The information presented here may not apply to cBioPortal v7 and onwards.</p>
-</blockquote>
 <h1 id="cbioportal-backend-code-organization">cBioPortal Backend Code Organization</h1>
-<h2 id="maven-project">Maven Project</h2>
-<p>The backend code is structured as a <a href="https://maven.apache.org/index.html">Maven</a>
-project. Included in the repository are <a href="https://maven.apache.org/pom.html#What_is_the_POM">pom.xml files</a>
-which define the code components and modules which make up the backend. The pom.xml
-files also list dependencies on external open source libraries, and dependencies between cBioPortal Maven modules.
-They also give instructions for how to build and package code components into a
-deployable format.</p>
-<h3 id="frontend-data-exchange">Frontend data exchange</h3>
-<p>The frontend is a <a href="https://reactjs.org/">React</a> javascript application located
-in a separate <a href="https://github.com/cBioPortal/cbioportal-frontend">GitHub
-repository</a> repo, which
-communicates with the backend via a REST API. We also use JSP  to embed
-configuration data in the initial HTML page in order to allow us to optimize
-loading times.</p>
-<h3 id="current-maven-modules">Current Maven Modules</h3>
-<p>TODO: This is out of date. See <a href="https://github.com/cBioPortal/cbioportal/issues/11403">https://github.com/cBioPortal/cbioportal/issues/11403</a>.</p>
-<h4 id="the-core-module">The core module</h4>
-<p>The <a href="https://github.com/cBioPortal/cbioportal/blob/master/core">core</a> module contains the oldest code in the code base. Much of
-the backend web data services logic has been re-implemented and expanded in
-other backend maven modules, such as <a href="https://github.com/cBioPortal/cbioportal/blob/master/model">model</a>,
-<a href="https://github.com/cBioPortal/cbioportal/blob/master/persistence/persistence-mybatis">persistence-mybatis</a>,
-<a href="https://github.com/cBioPortal/cbioportal/blob/master/service">service</a>, and <a href="https://github.com/cBioPortal/cbioportal/blob/master/web">web</a>. We plan to discontinue the legacy
-webservice.do data servlet and fully transition to the new data services API in
-the near future. The core module will then be purged of much of the legacy
-code. Any surviving functionality (such as the handling of global configuration
-properties) may be relocated into new modules. It is therefore important that
-no new code features be introduced which are dependent on the core module
-functionality.</p>
-<h4 id="the-central-stack-modules--web-service-persistence">The central stack modules : web, service, persistence</h4>
-<p>Three maven modules make up the central stack of the new web API implementation.</p>
+<p>The cBioPortal backend is a single-module Spring Boot application built with
+Maven. The current codebase uses package-based boundaries instead of the older
+multi-module layout.</p>
+<p>New backend work should follow the clean architecture structure under
+<code translate="no" v-pre>src/main/java/org/cbioportal</code>. Legacy packages are still active for existing
+APIs and migration work, but new feature development should prefer the
+application/domain/infrastructure stack.</p>
+<h2 id="runtime-stack">Runtime Stack</h2>
+<p>The backend connects to ClickHouse and serves the REST API used by
+<code translate="no" v-pre>cbioportal-frontend</code>. The frontend is maintained in the
+<a href="https://github.com/cBioPortal/cbioportal-frontend">cbioportal-frontend</a>
+repository and is packaged into the backend build as a Maven dependency.</p>
+<p>The session service is a separate application used for saved sessions, virtual
+studies, groups, and related user state. cBioPortal proxies session-service
+requests from the backend so the frontend does not need to call the session
+service directly.</p>
+<h2 id="main-packages">Main Packages</h2>
+<h3 id="orgcbioportalapplication"><code translate="no" v-pre>org.cbioportal.application</code></h3>
+<p>The application layer contains Spring MVC controllers, request and response
+DTOs, API mappers, endpoint security helpers, file/export code, and proxy code.</p>
+<p>Typical responsibilities:</p>
 <ul>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/web">web</a> : define Web API request handlers, map endpoints, select services</li>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/service">service</a> : call persistence module or utils, apply business logic</li>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/persistence">persistence</a> : retrieve data from database. Two submodules:
-<ul>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/persistence/persistence-api">persistence-api</a> : declaration of repository classes / functions, caching markup</li>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/persistence/persistence-mybatis">persistence-mybatis</a> : implementation of persistence-api using <a href="https://mybatis.org/mybatis-3/">MyBatis</a> mappers</li>
-</ul>
+<li>
+<p>Accept HTTP requests and validate request shape.</p>
+</li>
+<li>
+<p>Enforce authorization with <code translate="no" v-pre>@PreAuthorize</code> on endpoints that access
+study-specific data.</p>
+</li>
+<li>
+<p>Convert between API DTOs and domain objects.</p>
+</li>
+<li>
+<p>Delegate business behavior to domain use cases or legacy services.</p>
 </li>
 </ul>
-<h4 id="other-modules">Other modules</h4>
+<p>Controllers should not contain database queries or substantial business logic.</p>
+<h3 id="orgcbioportaldomain"><code translate="no" v-pre>org.cbioportal.domain</code></h3>
+<p>The domain layer contains feature-oriented business objects, repository
+interfaces, use cases, and pure domain utilities. Packages are organized by
+functional area, for example:</p>
 <ul>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/model">model</a> : data model POJO classes (used throughout the stack)</li>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/security">security</a> : user authentication methods and authorization, request filters</li>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/business">business</a> : a legacy refactor of webservice.do, has active dataSource definition</li>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/portal">portal</a> : web application packaging and launch</li>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/scripts">scripts</a> : data import tool packaging (from core module scripts package)</li>
-<li><a href="https://github.com/cBioPortal/cbioportal/blob/master/db_scripts">db_scripts</a> : installation and migration scripts for the database</li>
+<li><code translate="no" v-pre>alteration</code></li>
+<li><code translate="no" v-pre>cancerstudy</code></li>
+<li><code translate="no" v-pre>clinical_attributes</code></li>
+<li><code translate="no" v-pre>clinical_data</code></li>
+<li><code translate="no" v-pre>clinical_data_enrichment</code></li>
+<li><code translate="no" v-pre>clinical_event</code></li>
+<li><code translate="no" v-pre>coexpression</code></li>
+<li><code translate="no" v-pre>generic_assay</code></li>
+<li><code translate="no" v-pre>genomic_data</code></li>
+<li><code translate="no" v-pre>mutation</code></li>
+<li><code translate="no" v-pre>patient</code></li>
+<li><code translate="no" v-pre>sample</code></li>
+<li><code translate="no" v-pre>studyview</code></li>
+<li><code translate="no" v-pre>treatment</code></li>
 </ul>
-<h4 id="external-code-modules">External code modules</h4>
+<p>Domain use cases coordinate business rules and call repository interfaces. They
+should not depend on ClickHouse mapper classes, Spring MVC controllers, or API
+DTOs.</p>
+<h3 id="orgcbioportalinfrastructure"><code translate="no" v-pre>org.cbioportal.infrastructure</code></h3>
+<p>The infrastructure layer contains technical implementations for domain
+interfaces and external systems. Most data access code lives under
+<code translate="no" v-pre>infrastructure.repository.clickhouse</code>.</p>
+<p>Typical responsibilities:</p>
 <ul>
-<li><a href="https://github.com/cBioPortal/cbioportal-frontend">cbioportal-frontend</a> : a React application using MobX and TypeScript</li>
-<li><a href="https://github.com/cBioPortal/session-service">session-service</a> : an external session key/query specifier storage system</li>
+<li>Implement domain repository interfaces.</li>
+<li>Declare MyBatis mapper interfaces.</li>
+<li>Keep ClickHouse-specific details out of controllers and use cases.</li>
+<li>Hold infrastructure configuration and service adapters.</li>
 </ul>
-<p><strong>cbioportal-frontend</strong> is packaged in the web application as a default frontend
-implementation, but the source of the frontend code can also be directed to an external
-source host and be deployed independently of the backend web application. See
-<a href="../deployment-procedure/">details</a></p>
-<p><strong>session-service</strong> is imported into the web module in order to set up a proxy service
-which receives and forwards requests for saved cBioPortal sessions to a separate system
-providing this storage (using a document based database) The code is needed for handling
-modeled types such as VirtualStudy and Session</p>
-<h3 id="cbioportal-module-dependencies">cBioPortal Module Dependencies</h3>
-<figure class="content-center">
-    <img src="../../images/maven-module-dependencies.png" alt="Module Dependencies" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="936" height="584" />
-    <figcaption class="caption">Module Dependencies</figcaption>
-</figure>
-<p><em>A module is directly dependent on all modules which touch it from below (touching only at a corner
-does not count). Dependencies are transitive : web is dependent on service, service
-is dependent on persistence-mybatis, therefore web is also dependent on
-persistence-mybatis. During packaging, all dependencies are made available to the
-dependent package for use. Avoid creating new dependencies between modules.
-<strong>cyclical dependencies will cause errors during build</strong></em></p>
-<retype-table copy-text="Module | Dependencies
------- | ------------
-portal | core, _cbioportal-frontend_
-scripts | core
-core | web 
-web | business, service, _session-service_
-security-spring | service
-service | persistence-mybatis
-persistence-mybatis | persistence-api, db-scripts
-persistence-api | model
-business | model
-db-scripts |
-model |">
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>Module</th>
-<th>Dependencies</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>portal</td>
-<td>core, <em>cbioportal-frontend</em></td>
-</tr>
-<tr>
-<td>scripts</td>
-<td>core</td>
-</tr>
-<tr>
-<td>core</td>
-<td>web</td>
-</tr>
-<tr>
-<td>web</td>
-<td>business, service, <em>session-service</em></td>
-</tr>
-<tr>
-<td>security-spring</td>
-<td>service</td>
-</tr>
-<tr>
-<td>service</td>
-<td>persistence-mybatis</td>
-</tr>
-<tr>
-<td>persistence-mybatis</td>
-<td>persistence-api, db-scripts</td>
-</tr>
-<tr>
-<td>persistence-api</td>
-<td>model</td>
-</tr>
-<tr>
-<td>business</td>
-<td>model</td>
-</tr>
-<tr>
-<td>db-scripts</td>
-<td> </td>
-</tr>
-<tr>
-<td>model</td>
-<td> </td>
-</tr>
-</tbody>
-</table>
-</div>
-</retype-table>
+<p>The matching ClickHouse SQL mapper XML files live in
+<code translate="no" v-pre>src/main/resources/mappers/clickhouse</code>.</p>
+<h3 id="orgcbioportallegacy"><code translate="no" v-pre>org.cbioportal.legacy</code></h3>
+<p>The legacy layer contains the older model, persistence, service, web, security,
+configuration, and utility code that still supports existing behavior.</p>
+<p>This code is not dead code. Many endpoints and compatibility paths still depend
+on it. When changing legacy behavior, keep the change local and preserve the
+existing public API unless the issue or migration explicitly requires a
+contract change.</p>
+<p>For new features, prefer the clean architecture stack. If a feature must touch
+legacy code, keep the boundary clear and avoid expanding legacy patterns into
+new code.</p>
+<h3 id="orgcbioportalshared"><code translate="no" v-pre>org.cbioportal.shared</code></h3>
+<p>The shared package contains cross-cutting enums and small utilities that are
+used by more than one layer. Keep this package narrow; feature-specific logic
+usually belongs in the relevant domain package.</p>
+<h2 id="resources">Resources</h2>
+<p>Important runtime resources are under <code translate="no" v-pre>src/main/resources</code>:</p>
+<ul>
+<li><code translate="no" v-pre>application.properties.EXAMPLE</code> contains example Spring Boot configuration.</li>
+<li><code translate="no" v-pre>mappers/clickhouse</code> contains current ClickHouse MyBatis SQL mappers.</li>
+<li><code translate="no" v-pre>mappers/export</code> contains export SQL mappers.</li>
+<li><code translate="no" v-pre>db-scripts/clickhouse</code> contains ClickHouse schema and migration resources.</li>
+<li><code translate="no" v-pre>templates</code> and <code translate="no" v-pre>webapp</code> contain server-rendered and packaged web assets.</li>
+</ul>
+<p>Older mapper locations under <code translate="no" v-pre>src/main/resources/org/cbioportal</code> still support
+legacy code paths.</p>
+<h2 id="tests">Tests</h2>
+<p>The repository uses separate test layers:</p>
+<ul>
+<li>
+<p><code translate="no" v-pre>src/test/java</code> contains unit and focused Spring MVC tests.</p>
+</li>
+<li>
+<p><code translate="no" v-pre>src/integration/java</code> contains integration tests that need database-backed
+Spring components.</p>
+</li>
+<li>
+<p><code translate="no" v-pre>src/e2e/js</code> contains API E2E tests that call a running cBioPortal instance.</p>
+</li>
+</ul>
+<p>ClickHouse mapper tests commonly use Testcontainers fixtures from
+<code translate="no" v-pre>src/test/resources</code>.</p>
+<h2 id="adding-a-new-backend-feature">Adding a New Backend Feature</h2>
+<p>A typical clean-architecture feature has this shape:</p>
+<ol>
+<li>
+<p>Add or reuse domain model classes and repository interfaces in
+<code translate="no" v-pre>org.cbioportal.domain.&lt;feature&gt;</code>.</p>
+</li>
+<li>
+<p>Implement business behavior in a use case in the same domain package.</p>
+</li>
+<li>
+<p>Implement repository interfaces in
+<code translate="no" v-pre>org.cbioportal.infrastructure.repository.clickhouse.&lt;feature&gt;</code>.</p>
+</li>
+<li>
+<p>Add or update MyBatis mapper XML under
+<code translate="no" v-pre>src/main/resources/mappers/clickhouse/&lt;feature&gt;</code>.</p>
+</li>
+<li>
+<p>Add REST DTOs, MapStruct mappers, and controller methods under
+<code translate="no" v-pre>org.cbioportal.application.rest</code>.</p>
+</li>
+<li>
+<p>Add unit tests for use cases and controller behavior. Add mapper,
+integration, or E2E coverage when the behavior depends on SQL or the HTTP
+contract.</p>
+</li>
+</ol>
+<h2 id="dependency-direction">Dependency Direction</h2>
+<p>Keep dependencies flowing inward:</p>
+<ul>
+<li>Controllers depend on DTO mappers and domain use cases.</li>
+<li>Domain use cases depend on domain repository interfaces.</li>
+<li>Infrastructure implements domain repository interfaces and owns SQL details.</li>
+<li>Legacy code can be adapted at the boundary, but new domain logic should not
+depend on legacy web controllers.</li>
+</ul>
+<p>This direction keeps business behavior testable and lets ClickHouse-specific
+queries evolve without leaking persistence details into the REST layer.</p>
 
                 
                 <!-- Required only on API pages -->
@@ -407,7 +408,7 @@ model |">
                         <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../development/backend-development-guidelines/">
                             <span>
                                 <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
-                                <span class="block mt-1">c​Bio​Portal Development Guidelines</span>
+                                <span class="block mt-1">c​Bio​Portal Backend Development Guidelines</span>
                             </span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                         </a>

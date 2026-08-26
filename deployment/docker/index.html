@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.838732325586">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.841069310137">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -41,11 +41,12 @@
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
     <link id="retype-favicon" rel="icon" href="../../images/cbio-logo.png" />
-    <link href="../../resources/css/retype.css?v=4.6.0.838732325586" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.6.0.841069310137" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.838732325586" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.841069310137" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.838732325586" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.841069310137" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.841069310137" defer></script>
 
     <link rel="stylesheet" href="/static/custom.css"></link>
 </head>
@@ -323,10 +324,11 @@ docker compose down -v</code></pre>
 <p><strong>Note:</strong> If the validator detects any critical errors with the data, those must be fixed before the study can be imported.</p>
 </blockquote>
 <blockquote>
-<p><span class="docs-emoji">&#x26A0;&#xFE0F;</span> <strong>Warning:</strong> When importing large studies, you may run into a Java out-of-memory error on machines with limited RAM. You can try adjusting the Java heap size used by the importer in order to work around this, for example:</p>
+<p><span class="docs-emoji">&#x26A0;&#xFE0F;</span> <strong>Warning:</strong> Large studies can exhaust the importer&#x27;s Java heap, which shows up as <code translate="no" v-pre>java.lang.OutOfMemoryError: Java heap space</code> or as the process being killed with exit code 137. Raise the heap with <code translate="no" v-pre>-jvo</code>, which passes options through to the JVM:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">docker compose exec cbioportal metaImport.py -s /study/your_study -o -jvo &quot;-Xms16g -Xmx96g&quot;</code></pre>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">docker compose exec cbioportal metaImport.py -s /study/your_study -o -jvo &quot;-Xmx8g&quot;</code></pre>
 </doc-codeblock></div>
+<p><code translate="no" v-pre>-Xmx8g</code> is a reasonable starting point. For larger studies on larger machines, you may want to set the memory limit even higher.</p>
 </blockquote>
 <p>All public studies can be downloaded from <a href="https://www.cbioportal.org/datasets">cbioportal.org/datasets</a> or <a href="https://github.com/cBioPortal/datahub">github.com/cBioPortal/datahub</a>. Add any study to the <code translate="no" v-pre>./study</code> folder and import it. The <code translate="no" v-pre>./study/init.sh</code> script can download multiple studies at once — set <code translate="no" v-pre>DATAHUB_STUDIES</code> to any public study ID (e.g. <code translate="no" v-pre>lgg_ucsf_2014</code>) and run <code translate="no" v-pre>./init.sh</code>.</p>
 <h3 id="clearing-the-cache-after-import">Clearing the cache after import</h3>
@@ -339,6 +341,9 @@ docker compose down -v</code></pre>
 <p>For a full overview of available properties — custom logos, external databases, authentication, and more — see the <a href="../customization/customizing-your-instance-of-cbioportal/">customization documentation</a>.</p>
 <p><strong>Memory:</strong> On systems with 4 GiB or more to spare, set <code translate="no" v-pre>-Xms</code> and <code translate="no" v-pre>-Xmx</code> to the same value in <code translate="no" v-pre>docker-compose.yml</code> to improve performance of memory-intensive features (e.g. the co-expression tab). If you are on macOS or Windows, see <a href="notes-for-non-linux/">Notes for non-Linux systems</a> for how to increase memory allocated to the Docker VM.</p>
 <p><strong>OncoKB:</strong> To enable OncoKB annotations, obtain a data access token via <a href="../integration-with-other-webservices/oncokb-data-access/">OncoKB Data Access</a> and add it to <code translate="no" v-pre>application.properties</code>.</p>
+<h3 id="clickhouse-cloud">Clickhouse Cloud</h3>
+<p><a href="https://clickhouse.com/cloud"><img src="../../images/clickhouse-logo.svg" alt="ClickHouse" height="40" /></a></p>
+<p>The Clickhouse setup mentioned above is fully compatible with a remote Clickhouse database. For production environments, one can use Clickhouse as a managed service via <a href="https://clickhouse.com/cloud">Clickhouse Cloud</a> — it removes the operational overhead of running and scaling Clickhouse yourself. Update the clickhouse database credentials in the <a href="https://github.com/cBioPortal/cbioportal-docker-compose/blob/master/.env">.env</a> to match your Clickhouse Cloud database credentials. For the clickhouse sync step to work properly, your credentials should have both <code translate="no" v-pre>read</code> and <code translate="no" v-pre>write</code> permissions.</p>
 <h2 id="further-reading">Further Reading</h2>
 <ul>
 <li><a href="import_test_data/">Importing test data</a> — detailed import tutorial</li>
@@ -426,6 +431,6 @@ docker compose down -v</code></pre>
 
     <div id="retype-overlay-target"></div>
 
-        <script data-cfasync="false">window.__DOCS__ = { "title": "Deploy with Docker", level: 2, icon: "file", hasPrism: false, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/deployment/docker/readme.md" }</script>
+        <script data-cfasync="false">window.__DOCS__ = { "title": "Deploy with Docker", level: 2, icon: "file", hasPrism: true, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/deployment/docker/readme.md" }</script>
 </body>
 </html>

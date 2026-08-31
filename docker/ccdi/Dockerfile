@@ -42,7 +42,7 @@ RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*-exec.jar)
 
 # FROM eclipse-temurin:21
 # Use Alpine 3.20+ for libpng 1.6.55+ (CVE-2026-25646); 1.6.56+ for CVE-2026-33636
-FROM eclipse-temurin:21-alpine AS fnl_base_image
+FROM eclipse-temurin:21-alpine-3.24 AS fnl_base_image
 
 # # download system dependencies first to take advantage of docker caching
 # RUN apt-get update; apt-get install -y --no-install-recommends \

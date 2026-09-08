@@ -295,6 +295,23 @@ public class GenericAssayServiceImpTest extends BaseServiceImplTest {
   }
 
   @Test
+  public void fetchGenericAssayDataSkipsMolecularProfilesWithoutSampleIds() throws Exception {
+    Mockito.when(
+            geneticDataRepository.commaSeparatedSampleIdsOfMolecularProfilesMap(
+                Collections.singleton(MOLECULAR_PROFILE_ID_1)))
+        .thenReturn(Collections.emptyMap());
+
+    List<GenericAssayData> result =
+        genericAssayService.fetchGenericAssayData(
+            MOLECULAR_PROFILE_ID_1,
+            Arrays.asList(SAMPLE_ID1),
+            Arrays.asList(STABLE_ID_1, STABLE_ID_2),
+            PersistenceConstants.SUMMARY_PROJECTION);
+
+    Assert.assertTrue(result.isEmpty());
+  }
+
+  @Test
   public void getGenericAssayMetaByStableIdsAndMolecularIds() throws GenericAssayNotFoundException {
     Mockito.when(genericAssayRepository.getGenericAssayMeta(idList))
         .thenReturn(mockGenericAssayMetaList);

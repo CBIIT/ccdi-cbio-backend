@@ -106,21 +106,17 @@
     <tomcat.version>10.1.59</tomcat.version>
     <velocity.version>2.4</velocity.version>
 
-    <!-- CVE-2026-9828: logback-core HardenedObjectInputStream deserialization allowlist bypass; fixed in 1.5.33+ -->
-    <logback.version>1.5.35</logback.version>
-
     <!-- CVE-2025-48924: commons-lang3 ClassUtils.getClass() uncontrolled recursion / StackOverflowError -->
     <commons-lang3.version>3.18.0</commons-lang3.version>
 
-    <!-- CVE-2026-22732: Spring Security servlet HTTP security headers not written under certain conditions -->
-    <!-- CVE-2026-47838: X.509 SubjectDn CN parsing allows user impersonation; fixed in 6.5.11+ -->
-    <spring-security.version>6.5.11</spring-security.version>
-
-    <!-- CVE-2026-41851: SpEL unbounded cache DoS; fixed in 6.2.19+ -->
-    <spring-framework.version>6.2.19</spring-framework.version>
-
     <!-- CVE-2026-75595 (+ CVE-2026-50010, CVE-2026-59901): Netty SNI/mTLS fallback; use 4.1.137+ -->
     <netty.version>4.1.137.Final</netty.version>
+
+    <!-- CVE-2026-54428: HPackDecoder unbounded header list before SETTINGS ACK; fixed in 5.4.3+ -->
+    <!-- CVE-2026-54399: HTTP/1.1 unlimited default header count/line length; fixed in 5.4.2+ -->
+    <httpcore5.version>5.4.3</httpcore5.version>
+    <!-- CVE-2026-64607: classic HttpClient connection leak on invalid Content-Encoding; fixed in 5.6.3+ -->
+    <httpclient5.version>5.6.3</httpclient5.version>
 
     <!-- No sure what these are for -->
     <bundle.symbolicName.prefix>org.mskcc</bundle.symbolicName.prefix>
@@ -449,11 +445,14 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-bom</artifactId>
-        <version>${netty.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
+        <groupId>com.squareup.okio</groupId>
+        <artifactId>okio</artifactId>
+        <version>3.9.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.squareup.okio</groupId>
+        <artifactId>okio-jvm</artifactId>
+        <version>3.9.0</version>
       </dependency>
       <dependency>
         <groupId>org.bouncycastle</groupId>

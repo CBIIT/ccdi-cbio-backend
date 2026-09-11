@@ -337,8 +337,8 @@ persistence.cache_type=no-cache
 # if session service is not enabled, specify a comma separated list of studies
 # here instead e.g.:
 #
-default_cross_cancer_study_list=phs002790,openpedcan_v15,pstPDX_uthsa_2023,pedmatch_phs002883
-default_cross_cancer_study_list_name=Pediatric Cancer studies
+default_cross_cancer_study_list=phs002790,openpedcan_v15,pstpdx_uthsa_2023,pedmatch_phs002883,phs001327_ccss_sn,phs002529
+default_cross_cancer_study_list_name=All Cancer Studies
 
 # Enable/Disable quick search (currently in beta, default is false)
 quick_search.enabled=true

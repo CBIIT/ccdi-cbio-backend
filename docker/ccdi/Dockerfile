@@ -61,7 +61,6 @@ FROM eclipse-temurin:21-alpine-3.24 AS fnl_base_image
 #     && pip3 install --break-system-packages setuptools>=68.0.0
 
 # Explicit libpng: apk upgrade alone can be satisfied by a cached layer with an old index;
-# 1.6.56+ fixes CVE-2026-33636 (Alpine 3.23 main ships libpng-1.6.56-r0).
 # Explicit openssl: 3.5.6+ fixes CVE-2026-2673 (TLS 1.3 DEFAULT group list / HRR); same cache caveat.
 RUN apk update && apk upgrade --no-cache \
     && apk add --no-cache --upgrade libpng openssl

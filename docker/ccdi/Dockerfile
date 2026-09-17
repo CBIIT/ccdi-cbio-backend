@@ -42,7 +42,7 @@ RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*-exec.jar)
 
 # FROM eclipse-temurin:21
 # Use Alpine 3.20+ for libpng 1.6.55+ (CVE-2026-25646); 1.6.56+ for CVE-2026-33636
-FROM eclipse-temurin:21-alpine-3.23 AS fnl_base_image
+FROM eclipse-temurin:21-alpine-3.24 AS fnl_base_image
 
 # # download system dependencies first to take advantage of docker caching
 # RUN apt-get update; apt-get install -y --no-install-recommends \
@@ -61,9 +61,9 @@ FROM eclipse-temurin:21-alpine-3.23 AS fnl_base_image
 #     && pip3 install --break-system-packages setuptools>=68.0.0
 
 # Explicit libpng: apk upgrade alone can be satisfied by a cached layer with an old index;
-# 1.6.56+ fixes CVE-2026-33636 (Alpine 3.23 main ships libpng-1.6.56-r0).
+# Explicit openssl: 3.5.6+ fixes CVE-2026-2673 (TLS 1.3 DEFAULT group list / HRR); same cache caveat.
 RUN apk update && apk upgrade --no-cache \
-    && apk add --no-cache --upgrade libpng
+    && apk add --no-cache --upgrade libpng openssl
 
 # RUN apk update && apk add --no-cache \
 #     build-base \
@@ -123,4 +123,4 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes             $PORTAL_WEB_HOME/
 
 # add entrypoint
 # CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.config.location=cbioportal-webapp/application.properties --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --logging.level.root=DEBUG"]
-CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.config.location=cbioportal-webapp/application.properties --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --session.service.url=${SESSION_URL} --session.info.url=${SESSION_INFO_URL} --study_download_url=${STUDY_DOWNLOAD_URL} --portal.version=${PORTAL_VERSION:-unknown}"]
+CMD ["sh", "-c", "exec java $JAVA_OPTS -cp /cbioportal-webapp:/cbioportal-webapp/lib/* org.cbioportal.PortalApplication --spring.config.location=cbioportal-webapp/application.properties --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --session.service.url=${SESSION_URL} --session.info.url=${SESSION_INFO_URL} --springdoc.api-docs.server-url=${SPRINGDOC_API_DOCS_SERVER_URL} --study_download_url=${STUDY_DOWNLOAD_URL} --portal.version=${PORTAL_VERSION:-unknown}"]

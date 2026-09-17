@@ -35,6 +35,7 @@ package org.cbioportal.legacy.web.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -79,6 +80,8 @@ import org.cbioportal.legacy.web.parameter.SurvivalRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 public class InvolvedCancerStudyExtractorInterceptor implements HandlerInterceptor {
@@ -165,12 +168,15 @@ public class InvolvedCancerStudyExtractorInterceptor implements HandlerIntercept
       return true; // no attribute extraction needed because all user supplied filter objects are in
       // POST requests
     }
-    // TODO when reimplemeting different dispatcherservlets with different context roots
+    // TODO when reimplementing different dispatcherservlets with different context roots
     // reset this to  'String requestPathInfo = request.getPathInfo();'
     String requestPathInfo =
         request.getPathInfo() == null ? request.getServletPath() : request.getPathInfo();
     requestPathInfo = requestPathInfo.replaceFirst("^/api", "");
     // requestPathInfo = StringUtils.removeStart(requestPathInfo, "/column-store");
+    if (requestPathInfo.startsWith("/column-store/")) {
+      requestPathInfo = requestPathInfo.substring("/column-store".length());
+    }
     if (requestPathInfo.equals(PATIENT_FETCH_PATH)) {
       return extractAttributesFromPatientFilter(request);
     } else if (requestPathInfo.equals(SAMPLE_FETCH_PATH)) {
@@ -812,8 +818,15 @@ public class InvolvedCancerStudyExtractorInterceptor implements HandlerIntercept
 
   private boolean extractAttributesFromStudyViewFilter(HttpServletRequest request) {
     try {
-      StudyViewFilter studyViewFilter =
-          objectMapper.readValue(request.getInputStream(), StudyViewFilter.class);
+      byte[] raw = FileCopyUtils.copyToByteArray(request.getInputStream());
+      if (raw.length == 0 || !StringUtils.hasText(new String(raw, StandardCharsets.UTF_8))) {
+        request.setAttribute("interceptedStudyViewFilter", null);
+        if (cacheMapUtil.hasCacheEnabled()) {
+          request.setAttribute("involvedCancerStudies", Collections.emptySet());
+        }
+        return true;
+      }
+      StudyViewFilter studyViewFilter = objectMapper.readValue(raw, StudyViewFilter.class);
       if (studyViewFilter.getAlterationFilter() == null) {
         // For backwards compatibility an inactive filter is set
         // when the AlterationFilter is not part of the request.

@@ -64,11 +64,11 @@ public class AlterationEnrichmentController {
       @Parameter(hidden = true)
           // prevent reference to this attribute in the swagger-ui interface. this attribute is
           // needed for the @PreAuthorize tag above.
-          @Valid
           @RequestAttribute(
               required = false,
               value = "interceptedMolecularProfileCasesGroupFilters")
-          List<MolecularProfileCasesGroupFilter> interceptedMolecularProfileCasesGroupFilters,
+          List<@Valid MolecularProfileCasesGroupFilter>
+              interceptedMolecularProfileCasesGroupFilters,
       @Parameter(hidden = true)
           @Valid
           @RequestAttribute(required = false, value = "alterationEventTypes")

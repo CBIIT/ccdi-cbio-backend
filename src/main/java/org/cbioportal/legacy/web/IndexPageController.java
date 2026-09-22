@@ -2,14 +2,7 @@ package org.cbioportal.legacy.web;
 
 import static org.cbioportal.legacy.service.FrontendPropertiesServiceImpl.FrontendProperty;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import jakarta.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.cbioportal.legacy.service.FrontendPropertiesService;
@@ -26,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import tools.jackson.databind.json.JsonMapper;
 
 @Controller
 public class IndexPageController {
@@ -44,7 +38,7 @@ public class IndexPageController {
   @Value("${msk.whole.slide.viewer.secret.key:}")
   private String wholeSlideViewerKey;
 
-  private final ObjectMapper mapper = new ObjectMapper();
+  private final JsonMapper mapper = JsonMapper.builder().build();
 
   private Map<String, Object> getFrontendProperties(
       HttpServletRequest request, Authentication authentication) {
@@ -98,12 +92,7 @@ public class IndexPageController {
 
   @RequestMapping({"/", "/index", "/index.html", "/study/summary", "/results"})
   public String showIndexPage(
-      HttpServletRequest request, Authentication authentication, Model model)
-      throws JsonProcessingException {
-
-    SimpleModule simpleModule = new SimpleModule();
-    simpleModule.addSerializer(String.class, new CustomFrontendPropertiesSerializer());
-    mapper.registerModule(simpleModule);
+      HttpServletRequest request, Authentication authentication, Model model) {
 
     String baseUrl = requestUtils.getBaseUrl(request);
     JSONObject postData = requestUtils.getPostData(request);
@@ -133,20 +122,5 @@ public class IndexPageController {
 
   public FrontendPropertiesService getFrontendPropertiesService() {
     return frontendPropertiesService;
-  }
-
-  public static class CustomFrontendPropertiesSerializer extends JsonSerializer<String> {
-    @Override
-    public void serialize(
-        String value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-        throws IOException {
-      if ("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase((value))) {
-        jsonGenerator.writeBoolean("true".equalsIgnoreCase(value));
-      } else if (value != null) {
-        jsonGenerator.writeString(value);
-      } else {
-        jsonGenerator.writeNull();
-      }
-    }
   }
 }

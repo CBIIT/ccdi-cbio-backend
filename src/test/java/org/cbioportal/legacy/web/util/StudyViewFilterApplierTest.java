@@ -9,8 +9,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -70,7 +70,9 @@ import org.mockito.Spy;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -125,7 +127,7 @@ public class StudyViewFilterApplierTest {
   @Spy @InjectMocks private MolecularProfileUtil molecularProfileUtil;
 
   @Mock private SessionServiceRequestHandler sessionServiceRequestHandler;
-  @Spy private ObjectMapper sessionServiceObjectMapper = new ObjectMapper();
+  private ObjectMapper sessionServiceObjectMapper = new ObjectMapper();
 
   @Spy @InjectMocks private CustomDataServiceImpl customDataService;
 
@@ -134,8 +136,83 @@ public class StudyViewFilterApplierTest {
   @Before
   public void setup() {
     MockitoAnnotations.initMocks(this);
+    ReflectionTestUtils.setField(studyViewFilterApplier, "applicationContext", applicationContext);
+    ReflectionTestUtils.setField(studyViewFilterApplier, "sampleService", sampleService);
+    ReflectionTestUtils.setField(studyViewFilterApplier, "mutationService", mutationService);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier, "discreteCopyNumberService", discreteCopyNumberService);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier, "molecularProfileService", molecularProfileService);
+    ReflectionTestUtils.setField(studyViewFilterApplier, "genePanelService", genePanelService);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier,
+        "clinicalDataEqualityFilterApplier",
+        clinicalDataEqualityFilterApplier);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier,
+        "clinicalDataIntervalFilterApplier",
+        clinicalDataIntervalFilterApplier);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier, "customDataFilterApplier", customDataFilterApplier);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier, "studyViewFilterUtil", studyViewFilterUtil);
+    ReflectionTestUtils.setField(studyViewFilterApplier, "geneService", geneService);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier, "clinicalAttributeService", clinicalAttributeService);
+    ReflectionTestUtils.setField(studyViewFilterApplier, "sampleListService", sampleListService);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier, "molecularDataService", molecularDataService);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier, "genericAssayService", genericAssayService);
+    ReflectionTestUtils.setField(studyViewFilterApplier, "dataBinner", dataBinner);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier, "structuralVariantService", structuralVariantService);
+    ReflectionTestUtils.setField(
+        studyViewFilterApplier, "molecularProfileUtil", molecularProfileUtil);
+    ReflectionTestUtils.setField(
+        clinicalDataEqualityFilterApplier, "studyViewFilterUtil", studyViewFilterUtil);
+    setSuperclassField(
+        ClinicalDataFilterApplier.class,
+        clinicalDataEqualityFilterApplier,
+        "studyViewFilterUtil",
+        studyViewFilterUtil);
+    ReflectionTestUtils.setField(
+        clinicalDataEqualityFilterApplier, "patientService", patientService);
+    ReflectionTestUtils.setField(
+        clinicalDataEqualityFilterApplier, "clinicalDataService", clinicalDataService);
+    ReflectionTestUtils.setField(
+        clinicalDataIntervalFilterApplier, "studyViewFilterUtil", studyViewFilterUtil);
+    setSuperclassField(
+        ClinicalDataFilterApplier.class,
+        clinicalDataIntervalFilterApplier,
+        "studyViewFilterUtil",
+        studyViewFilterUtil);
+    ReflectionTestUtils.setField(
+        clinicalDataIntervalFilterApplier, "patientService", patientService);
+    ReflectionTestUtils.setField(
+        clinicalDataIntervalFilterApplier, "clinicalDataService", clinicalDataService);
+    ReflectionTestUtils.setField(customDataFilterApplier, "customDataService", customDataService);
+    ReflectionTestUtils.setField(
+        customDataFilterApplier, "equalityFilterApplier", clinicalDataEqualityFilterApplier);
+    ReflectionTestUtils.setField(
+        customDataFilterApplier, "intervalFilterApplier", clinicalDataIntervalFilterApplier);
+    ReflectionTestUtils.setField(
+        customDataService, "sessionServiceRequestHandler", sessionServiceRequestHandler);
+    ReflectionTestUtils.setField(
+        customDataService, "sessionServiceObjectMapper", sessionServiceObjectMapper);
     when(applicationContext.getBean(StudyViewFilterApplier.class))
         .thenReturn(studyViewFilterApplier);
+  }
+
+  private static void setSuperclassField(
+      Class<?> declaringClass, Object target, String fieldName, Object value) {
+    try {
+      Field field = declaringClass.getDeclaredField(fieldName);
+      field.setAccessible(true);
+      field.set(target, value);
+    } catch (ReflectiveOperationException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   @Test

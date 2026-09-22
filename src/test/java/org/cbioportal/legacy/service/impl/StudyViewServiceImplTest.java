@@ -50,7 +50,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StudyViewServiceImplTest extends BaseServiceImplTest {
@@ -58,7 +57,7 @@ public class StudyViewServiceImplTest extends BaseServiceImplTest {
   @Spy @InjectMocks private StudyViewServiceImpl studyViewService;
   @Mock private MolecularProfileService molecularProfileService;
   @Mock private GenePanelService genePanelService;
-  @Spy @MockBean private MolecularProfileUtil molecularProfileUtil;
+  @Spy private MolecularProfileUtil molecularProfileUtil;
   @Mock private AlterationCountService alterationCountService;
   @Mock private SignificantlyMutatedGeneService significantlyMutatedGeneService;
   @Mock private SignificantCopyNumberRegionService significantCopyNumberRegionService;

@@ -3,10 +3,6 @@ package org.cbioportal.legacy.web.util;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-import com.fasterxml.jackson.core.TreeNode;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -43,6 +39,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.core.TreeNode;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClinicalDataBinUtilTest {
@@ -72,7 +73,7 @@ public class ClinicalDataBinUtilTest {
   @Spy private DataBinHelper dataBinHelper;
   private final String testDataAttributeId = "test";
   private final ObjectMapper customDatasetMapper =
-      new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      JsonMapper.builder().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
 
   @Before
   public void setup() {
@@ -373,8 +374,7 @@ public class ClinicalDataBinUtilTest {
     TreeNode path = customDatasetMapper.readTree(customDataset).path("data").path("data");
 
     TypeReference<List<SampleIdentifier>> type = new TypeReference<List<SampleIdentifier>>() {};
-    List<SampleIdentifier> customIDs =
-        customDatasetMapper.readValue(customDatasetMapper.treeAsTokens(path), type);
+    List<SampleIdentifier> customIDs = customDatasetMapper.convertValue(path, type);
 
     when(studyViewFilterApplier.apply(any())).thenReturn(customIDs);
   }

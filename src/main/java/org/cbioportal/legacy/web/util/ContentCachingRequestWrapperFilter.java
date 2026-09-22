@@ -33,7 +33,7 @@ public class ContentCachingRequestWrapperFilter implements Filter {
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
       throws IOException, ServletException {
     ContentCachingRequestWrapper wrappedRequest =
-        new ContentCachingRequestWrapper((HttpServletRequest) request);
+        new ContentCachingRequestWrapper((HttpServletRequest) request, 10 * 1024 * 1024);
     LOG.trace("Wrapping request for multiple reads of request body");
     filterChain.doFilter(wrappedRequest, response);
   }

@@ -32,8 +32,6 @@
 
 package org.cbioportal.legacy.persistence.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -45,6 +43,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.util.DigestUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 public class CustomKeyGenerator implements KeyGenerator {
   public static final String CACHE_KEY_PARAM_DELIMITER = "_";
@@ -90,7 +90,7 @@ public class CustomKeyGenerator implements KeyGenerator {
         // leave short keys intact, but remove semicolons to make things look cleaner in redis
         return json.replaceAll(":", CACHE_KEY_PARAM_DELIMITER);
       }
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       LOG.error("Could not serialize param to string: ", e);
       return "";
     }

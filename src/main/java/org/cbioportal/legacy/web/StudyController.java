@@ -1,8 +1,5 @@
 package org.cbioportal.legacy.web;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -14,7 +11,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.databind.ObjectMapper;
 
 @PublicApi
 @RestController()
@@ -221,8 +218,7 @@ public class StudyController {
       content = @Content(schema = @Schema(implementation = Object.class)))
   public ResponseEntity<Object> getTags(
       @Parameter(required = true, description = "Study ID e.g. acc_tcga") @PathVariable
-          String studyId)
-      throws JsonParseException, JsonMappingException, IOException {
+          String studyId) {
 
     Map<String, Object> map = new HashMap<String, Object>();
     ObjectMapper mapper = new ObjectMapper();

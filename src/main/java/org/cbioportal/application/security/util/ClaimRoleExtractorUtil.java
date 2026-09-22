@@ -1,8 +1,5 @@
 package org.cbioportal.application.security.util;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -11,6 +8,9 @@ import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 public class ClaimRoleExtractorUtil {
   private static final Logger log = LoggerFactory.getLogger(ClaimRoleExtractorUtil.class);
@@ -19,8 +19,7 @@ public class ClaimRoleExtractorUtil {
       final Map<String, Object> claims, final String jwtRolesPath) {
     try {
       // Convert the map to a JSON string
-      ObjectMapper objectMapper = new ObjectMapper();
-      objectMapper.registerModule(new JavaTimeModule());
+      ObjectMapper objectMapper = JsonMapper.builder().build();
       String jsonString = objectMapper.writeValueAsString(claims);
 
       JsonNode rolesCursor = new ObjectMapper().readTree(jsonString);

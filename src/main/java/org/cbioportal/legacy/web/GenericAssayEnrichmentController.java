@@ -70,15 +70,14 @@ public class GenericAssayEnrichmentController {
                   required = true,
                   description =
                       "List of groups containing sample and molecular profile identifiers")
-              @Valid
               @RequestBody(required = false)
-              List<MolecularProfileCasesGroupFilter> groups,
+              List<@Valid MolecularProfileCasesGroupFilter> groups,
           @Parameter(hidden = true)
-              @Valid
               @RequestAttribute(
                   required = false,
                   value = "interceptedMolecularProfileCasesGroupFilters")
-              List<MolecularProfileCasesGroupFilter> interceptedMolecularProfileCasesGroupFilters)
+              List<@Valid MolecularProfileCasesGroupFilter>
+                  interceptedMolecularProfileCasesGroupFilters)
           throws MolecularProfileNotFoundException, UnsupportedOperationException {
 
     return new ResponseEntity<>(
@@ -114,15 +113,14 @@ public class GenericAssayEnrichmentController {
                   required = true,
                   description =
                       "List of groups containing sample and molecular profile identifiers")
-              @Valid
               @RequestBody(required = false)
-              List<MolecularProfileCasesGroupFilter> groups,
+              List<@Valid MolecularProfileCasesGroupFilter> groups,
           @Parameter(hidden = true)
-              @Valid
               @RequestAttribute(
                   required = false,
                   value = "interceptedMolecularProfileCasesGroupFilters")
-              List<MolecularProfileCasesGroupFilter> interceptedMolecularProfileCasesGroupFilters)
+              List<@Valid MolecularProfileCasesGroupFilter>
+                  interceptedMolecularProfileCasesGroupFilters)
           throws MolecularProfileNotFoundException, UnsupportedOperationException {
 
     Map<String, List<MolecularProfileCaseIdentifier>> groupCaseIdentifierSet =

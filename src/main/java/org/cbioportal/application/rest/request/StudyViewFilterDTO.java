@@ -32,7 +32,7 @@ public class StudyViewFilterDTO {
 
   private List<ClinicalDataFilter> clinicalDataFilters;
   private List<GeneFilter> geneFilters;
-  @Valid private List<StudyViewStructuralVariantFilter> structuralVariantFilters;
+  private List<@Valid StudyViewStructuralVariantFilter> structuralVariantFilters;
   private AndedSampleTreatmentFilters sampleTreatmentFilters;
   private AndedSampleTreatmentFilters sampleTreatmentGroupFilters;
   private AndedSampleTreatmentFilters sampleTreatmentTargetFilters;

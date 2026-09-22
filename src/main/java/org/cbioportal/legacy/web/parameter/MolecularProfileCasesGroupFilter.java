@@ -1,5 +1,6 @@
 package org.cbioportal.legacy.web.parameter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,9 +9,11 @@ import org.cbioportal.legacy.model.MolecularProfileCaseIdentifier;
 
 public class MolecularProfileCasesGroupFilter {
 
+  @JsonProperty("molecularProfileCaseIdentifiers")
   @Size(min = 1, max = PagingConstants.MAX_PAGE_SIZE)
   private List<MolecularProfileCaseIdentifier> MolecularProfileCaseIdentifiers;
 
+  @JsonProperty("name")
   private String name;
 
   public String getName() {

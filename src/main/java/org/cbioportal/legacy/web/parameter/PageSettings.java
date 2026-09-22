@@ -2,11 +2,10 @@ package org.cbioportal.legacy.web.parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import org.cbioportal.legacy.utils.removeme.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.ObjectMapper;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PageSettings extends Session {
@@ -19,7 +18,7 @@ public class PageSettings extends Session {
     ObjectMapper mapper = new ObjectMapper();
     try {
       this.data = mapper.readValue(mapper.writeValueAsString(data), PageSettingsData.class);
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
       LOG.error("Error occurred", e);
     }
   }

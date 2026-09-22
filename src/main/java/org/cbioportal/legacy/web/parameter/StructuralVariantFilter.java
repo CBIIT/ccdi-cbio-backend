@@ -42,9 +42,8 @@ public class StructuralVariantFilter implements Serializable {
   @Size(max = PagingConstants.MAX_PAGE_SIZE)
   private List<Integer> entrezGeneIds;
 
-  @Valid
   @Size(max = PagingConstants.MAX_PAGE_SIZE)
-  private List<StructuralVariantQuery> structuralVariantQueries;
+  private List<@Valid StructuralVariantQuery> structuralVariantQueries;
 
   @AssertTrue
   private boolean isEitherMolecularProfileIdsOrSampleMolecularIdentifiersPresent() {

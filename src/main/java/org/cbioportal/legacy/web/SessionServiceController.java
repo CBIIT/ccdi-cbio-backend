@@ -3,9 +3,6 @@ package org.cbioportal.legacy.web;
 import static org.cbioportal.legacy.web.PublicVirtualStudiesController.ALL_USERS;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -53,6 +50,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.HttpClientErrorException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @Controller
 @RequestMapping("/api/session")
@@ -164,7 +164,7 @@ public class SessionServiceController {
       // was String when default converter StringHttpMessageConverter was used
       return sessionServiceRequestHandler.createSession(type, payload);
 
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
       LOG.error("Error occurred", e);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -237,7 +237,7 @@ public class SessionServiceController {
       description = "OK",
       content =
           @Content(array = @ArraySchema(schema = @Schema(implementation = VirtualStudy.class))))
-  public ResponseEntity<List<VirtualStudy>> getUserStudies() throws JsonProcessingException {
+  public ResponseEntity<List<VirtualStudy>> getUserStudies() {
 
     if (sessionServiceRequestHandler.isSessionServiceEnabled() && isAuthorized()) {
       try {
@@ -366,9 +366,10 @@ public class SessionServiceController {
 
     try {
       ObjectMapper objectMapper =
-          new ObjectMapper()
-              .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-              .setSerializationInclusion(Include.NON_NULL);
+          JsonMapper.builder()
+              .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+              .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(Include.NON_NULL))
+              .build();
       if (sessionServiceRequestHandler.isSessionServiceEnabled() && isAuthorized()) {
         PageSettings pageSettings =
             sessionServiceRequestHandler.getRecentlyUpdatePageSettings(

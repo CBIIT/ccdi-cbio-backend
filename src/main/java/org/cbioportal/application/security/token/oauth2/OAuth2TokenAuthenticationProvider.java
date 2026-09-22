@@ -32,9 +32,6 @@
 
 package org.cbioportal.application.security.token.oauth2;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.Collection;
 import org.cbioportal.application.security.util.ClaimRoleExtractorUtil;
 import org.cbioportal.application.security.util.GrantedAuthorityUtil;
@@ -46,6 +43,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 public class OAuth2TokenAuthenticationProvider implements AuthenticationProvider {
 
@@ -103,7 +102,7 @@ public class OAuth2TokenAuthenticationProvider implements AuthenticationProvider
     JsonNode claimsMap;
     try {
       claimsMap = new ObjectMapper().readTree(claims);
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
       throw new BadCredentialsException("User name could not be found in access token.");
     }
 

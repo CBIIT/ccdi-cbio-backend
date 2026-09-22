@@ -788,7 +788,7 @@ public class StudyViewController {
           } else {
             // patient has no samples - this shouldn't happen and could affect the integrity
             //  of the data analysis
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
           }
         } else {
           // if its a sample data, just add it to the list
@@ -1108,7 +1108,7 @@ public class StudyViewController {
           } else {
             // patient has no samples - this shouldn't happen and could affect the integrity
             //  of the data analysis
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
           }
         } else {
           // if its a sample data, just add it to the list

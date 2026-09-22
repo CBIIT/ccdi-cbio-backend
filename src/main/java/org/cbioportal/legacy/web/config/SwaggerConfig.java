@@ -1,6 +1,5 @@
 package org.cbioportal.legacy.web.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -50,10 +49,11 @@ public class SwaggerConfig {
   }
 
   @Bean
-  public OpenAPI springShopOpenAPI(
-      ObjectMapper customObjectMapper,
-      @Value("${springdoc.api-docs.server-url:}") String serverUrl) {
-    ModelConverters.getInstance().addConverter(new ModelResolver(customObjectMapper));
+  public OpenAPI springShopOpenAPI(@Value("${springdoc.api-docs.server-url:}") String serverUrl) {
+    com.fasterxml.jackson.databind.ObjectMapper swaggerMapper =
+        new com.fasterxml.jackson.databind.ObjectMapper();
+    CustomObjectMapper.mixins().forEach(swaggerMapper::addMixIn);
+    ModelConverters.getInstance().addConverter(new ModelResolver(swaggerMapper));
     OpenAPI openAPI =
         new OpenAPI()
             .info(

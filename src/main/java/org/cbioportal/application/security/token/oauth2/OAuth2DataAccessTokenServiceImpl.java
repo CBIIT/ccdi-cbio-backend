@@ -32,9 +32,6 @@
 
 package org.cbioportal.application.security.token.oauth2;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import org.cbioportal.legacy.model.DataAccessToken;
@@ -51,6 +48,8 @@ import org.springframework.security.jwt.JwtHelper;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 public class OAuth2DataAccessTokenServiceImpl implements DataAccessTokenService {
   @Value("${dat.oauth2.issuer}")
@@ -168,7 +167,7 @@ public class OAuth2DataAccessTokenServiceImpl implements DataAccessTokenService 
     JsonNode claimsMap;
     try {
       claimsMap = new ObjectMapper().readTree(claims);
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
       throw new BadCredentialsException("User name could not be found in offline token.");
     }
 

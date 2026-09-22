@@ -2,8 +2,6 @@ package org.cbioportal.application.security.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +9,8 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 @RunWith(MockitoJUnitRunner.class)
 class ClaimRoleExtractorUtilTest {

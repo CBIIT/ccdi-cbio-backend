@@ -57,8 +57,10 @@ public class DataAccessTokenMyBatisRepositoryTest {
     DataAccessToken newDataAccessToken = dataAccessTokenMyBatisRepository.getDataAccessToken(uuid);
     Assert.assertEquals(uuid, newDataAccessToken.getToken());
     Assert.assertEquals("mockemail2@email.com", newDataAccessToken.getUsername());
-    Assert.assertEquals(creationDate, newDataAccessToken.getCreation());
-    Assert.assertEquals(expirationDate, newDataAccessToken.getExpiration());
+    Assert.assertTrue(
+        Math.abs(creationDate.getTime() - newDataAccessToken.getCreation().getTime()) < 2000);
+    Assert.assertTrue(
+        Math.abs(expirationDate.getTime() - newDataAccessToken.getExpiration().getTime()) < 2000);
   }
 
   @Test

@@ -1,6 +1,5 @@
 package org.cbioportal.application.file.export.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Set;
@@ -12,6 +11,7 @@ import org.cbioportal.legacy.service.VirtualStudyService;
 import org.cbioportal.legacy.web.parameter.VirtualStudy;
 import org.cbioportal.legacy.web.parameter.VirtualStudyData;
 import org.cbioportal.legacy.web.parameter.VirtualStudySamples;
+import tools.jackson.databind.ObjectMapper;
 
 public class VirtualStudyExportDecoratorService implements Exporter {
 

@@ -11,7 +11,7 @@ import org.cbioportal.legacy.model.EnrichmentType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +30,7 @@ class AlterationEnrichmentControllerE2ETest extends AbstractE2ETest {
     @LocalServerPort
     private int port;
 
-    private static final com.fasterxml.jackson.databind.ObjectMapper OBJECT_MAPPER = new com.fasterxml.jackson.databind.ObjectMapper();
+    private static final tools.jackson.databind.ObjectMapper OBJECT_MAPPER = new tools.jackson.databind.ObjectMapper();
 
     private AlterationEnrichment[] callEnrichmentEndpoint(String testDataJson) throws Exception {
         return callEnrichmentEndpoint(testDataJson, EnrichmentType.SAMPLE);
@@ -102,18 +102,18 @@ class AlterationEnrichmentControllerE2ETest extends AbstractE2ETest {
         String testDataJson = loadTestData("all_alterations.json");
         
         // Parse JSON and filter out mutation and structural variant profiles from molecularProfileCaseIdentifiers
-        com.fasterxml.jackson.databind.JsonNode rootNode = OBJECT_MAPPER.readTree(testDataJson);
-        com.fasterxml.jackson.databind.node.ArrayNode groupsArray = 
-            (com.fasterxml.jackson.databind.node.ArrayNode) rootNode.get("molecularProfileCasesGroupFilter");
+        tools.jackson.databind.JsonNode rootNode = OBJECT_MAPPER.readTree(testDataJson);
+        tools.jackson.databind.node.ArrayNode groupsArray = 
+            (tools.jackson.databind.node.ArrayNode) rootNode.get("molecularProfileCasesGroupFilter");
         
         // Filter each group's molecularProfileCaseIdentifiers to exclude mutation and structural variant profiles
-        for (com.fasterxml.jackson.databind.JsonNode group : groupsArray) {
-            com.fasterxml.jackson.databind.node.ArrayNode identifiersArray = 
-                (com.fasterxml.jackson.databind.node.ArrayNode) group.get("molecularProfileCaseIdentifiers");
+        for (tools.jackson.databind.JsonNode group : groupsArray) {
+            tools.jackson.databind.node.ArrayNode identifiersArray = 
+                (tools.jackson.databind.node.ArrayNode) group.get("molecularProfileCaseIdentifiers");
             
             // Create a new array with only CNA profiles (excluding mutation and structural variant profiles)
-            com.fasterxml.jackson.databind.node.ArrayNode filteredArray = OBJECT_MAPPER.createArrayNode();
-            for (com.fasterxml.jackson.databind.JsonNode identifier : identifiersArray) {
+            tools.jackson.databind.node.ArrayNode filteredArray = OBJECT_MAPPER.createArrayNode();
+            for (tools.jackson.databind.JsonNode identifier : identifiersArray) {
                 String profileId = identifier.get("molecularProfileId").asText();
                 if (!profileId.endsWith("_mutations") && !profileId.endsWith("_structural_variants")) {
                     filteredArray.add(identifier);
@@ -121,7 +121,7 @@ class AlterationEnrichmentControllerE2ETest extends AbstractE2ETest {
             }
             
             // Replace the original array with the filtered one
-            ((com.fasterxml.jackson.databind.node.ObjectNode) group).set("molecularProfileCaseIdentifiers", filteredArray);
+            ((tools.jackson.databind.node.ObjectNode) group).set("molecularProfileCaseIdentifiers", filteredArray);
         }
         
         AlterationEnrichment[] enrichments = callEnrichmentEndpoint(OBJECT_MAPPER.writeValueAsString(rootNode));
@@ -145,9 +145,9 @@ class AlterationEnrichmentControllerE2ETest extends AbstractE2ETest {
         String testDataJson = loadTestData("all_alterations.json");
 
         // Parse JSON and disable missense_mutation
-        com.fasterxml.jackson.databind.JsonNode rootNode = OBJECT_MAPPER.readTree(testDataJson);
-        com.fasterxml.jackson.databind.node.ObjectNode mutationEventTypes = 
-            (com.fasterxml.jackson.databind.node.ObjectNode) rootNode.get("alterationEventTypes").get("mutationEventTypes");
+        tools.jackson.databind.JsonNode rootNode = OBJECT_MAPPER.readTree(testDataJson);
+        tools.jackson.databind.node.ObjectNode mutationEventTypes = 
+            (tools.jackson.databind.node.ObjectNode) rootNode.get("alterationEventTypes").get("mutationEventTypes");
         mutationEventTypes.put("missense_mutation", false);
 
         AlterationEnrichment[] enrichments = callEnrichmentEndpoint(OBJECT_MAPPER.writeValueAsString(rootNode));
@@ -210,9 +210,9 @@ class AlterationEnrichmentControllerE2ETest extends AbstractE2ETest {
         int originalTotalAlteredSamples = getTotalAlteredSamples(originalTp53Enrichment);
 
         // Modify JSON to exclude missense mutations
-        com.fasterxml.jackson.databind.JsonNode rootNode = OBJECT_MAPPER.readTree(testDataJson);
-        com.fasterxml.jackson.databind.node.ObjectNode mutationEventTypes = 
-            (com.fasterxml.jackson.databind.node.ObjectNode) rootNode.get("alterationEventTypes").get("mutationEventTypes");
+        tools.jackson.databind.JsonNode rootNode = OBJECT_MAPPER.readTree(testDataJson);
+        tools.jackson.databind.node.ObjectNode mutationEventTypes = 
+            (tools.jackson.databind.node.ObjectNode) rootNode.get("alterationEventTypes").get("mutationEventTypes");
         mutationEventTypes.put("missense", false);
         mutationEventTypes.put("missense_mutation", false);
         mutationEventTypes.put("missense_variant", false);

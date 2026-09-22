@@ -8,8 +8,7 @@ import java.util.List;
 public class GroupFilter implements Serializable {
 
   @Size(min = 2)
-  @Valid
-  private List<Group> groups;
+  private List<@Valid Group> groups;
 
   public List<Group> getGroups() {
     return groups;

@@ -18,25 +18,32 @@ import org.cbioportal.legacy.model.Sample;
 import org.cbioportal.legacy.model.StructuralVariant;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.http.converter.AbstractJacksonHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.AbstractMappingJacksonResponseBodyAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @ControllerAdvice("org.cbioportal.legacy.web")
-public class UniqueKeyInterceptor extends AbstractMappingJacksonResponseBodyAdvice {
+public class UniqueKeyInterceptor implements ResponseBodyAdvice<Object> {
 
   @Override
-  protected void beforeBodyWriteInternal(
-      MappingJacksonValue mappingJacksonValue,
-      MediaType mediaType,
+  public boolean supports(
+      MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+    return AbstractJacksonHttpMessageConverter.class.isAssignableFrom(converterType);
+  }
+
+  @Override
+  public Object beforeBodyWrite(
+      Object body,
       MethodParameter methodParameter,
+      MediaType mediaType,
+      Class<? extends HttpMessageConverter<?>> converterType,
       ServerHttpRequest serverHttpRequest,
       ServerHttpResponse serverHttpResponse) {
-    Object value = mappingJacksonValue.getValue();
-    if (value instanceof List) {
-      List list = (List) value;
+    if (body instanceof List) {
+      List list = (List) body;
       for (Object object : list) {
         if (object instanceof Alteration) {
           Alteration alteration = (Alteration) object;
@@ -125,5 +132,6 @@ public class UniqueKeyInterceptor extends AbstractMappingJacksonResponseBodyAdvi
         }
       }
     }
+    return body;
   }
 }

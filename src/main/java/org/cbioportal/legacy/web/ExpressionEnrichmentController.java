@@ -68,18 +68,17 @@ public class ExpressionEnrichmentController {
       @Parameter(
               required = true,
               description = "List of groups containing sample and molecular profile identifiers")
-          @Valid
           @RequestBody(required = false)
-          List<MolecularProfileCasesGroupFilter> groups,
+          List<@Valid MolecularProfileCasesGroupFilter> groups,
       @Parameter(
               hidden =
                   true) // prevent reference to this attribute in the swagger-ui interface. this
           // attribute is needed for the @PreAuthorize tag above.
-          @Valid
           @RequestAttribute(
               required = false,
               value = "interceptedMolecularProfileCasesGroupFilters")
-          List<MolecularProfileCasesGroupFilter> interceptedMolecularProfileCasesGroupFilters)
+          List<@Valid MolecularProfileCasesGroupFilter>
+              interceptedMolecularProfileCasesGroupFilters)
       throws MolecularProfileNotFoundException {
 
     return new ResponseEntity<>(
@@ -113,18 +112,17 @@ public class ExpressionEnrichmentController {
       @Parameter(
               required = true,
               description = "List of groups containing sample and molecular profile identifiers")
-          @Valid
           @RequestBody(required = false)
-          List<MolecularProfileCasesGroupFilter> groups,
+          List<@Valid MolecularProfileCasesGroupFilter> groups,
       @Parameter(
               hidden =
                   true) // prevent reference to this attribute in the swagger-ui interface. this
           // attribute is needed for the @PreAuthorize tag above.
-          @Valid
           @RequestAttribute(
               required = false,
               value = "interceptedMolecularProfileCasesGroupFilters")
-          List<MolecularProfileCasesGroupFilter> interceptedMolecularProfileCasesGroupFilters)
+          List<@Valid MolecularProfileCasesGroupFilter>
+              interceptedMolecularProfileCasesGroupFilters)
       throws MolecularProfileNotFoundException,
           UnsupportedOperationException,
           GenericAssayNotFoundException {

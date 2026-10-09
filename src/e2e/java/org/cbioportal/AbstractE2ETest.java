@@ -1,6 +1,7 @@
 package org.cbioportal;
 
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -8,6 +9,7 @@ import org.springframework.test.context.DynamicPropertySource;
 
 @ActiveProfiles("clickhouse")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestRestTemplate
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractE2ETest {
 

@@ -19,7 +19,7 @@ public abstract class AbstractE2ETest {
 
     public static final String MYSQL_URL = "jdbc:mysql://rfc80db.cbioportal.org:3306/cgds_public_2025_06_24?zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true";
     public static final String MYSQL_USERNAME = "cgds_user";
-    public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    public static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {

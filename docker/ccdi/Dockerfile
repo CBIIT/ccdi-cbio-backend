@@ -63,7 +63,7 @@ FROM eclipse-temurin:21-alpine-3.24 AS fnl_base_image
 # Explicit libpng: apk upgrade alone can be satisfied by a cached layer with an old index;
 # Explicit openssl: 3.5.6+ fixes CVE-2026-2673 (TLS 1.3 DEFAULT group list / HRR); same cache caveat.
 RUN apk update && apk upgrade --no-cache \
-    && apk add --no-cache --upgrade libpng openssl
+    && apk add --no-cache --upgrade libpng openssl expat
 
 # RUN apk update && apk add --no-cache \
 #     build-base \

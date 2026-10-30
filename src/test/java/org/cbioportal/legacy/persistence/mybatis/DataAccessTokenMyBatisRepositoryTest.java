@@ -46,6 +46,9 @@ public class DataAccessTokenMyBatisRepositoryTest {
   public void addDataAccessToken() {
     String uuid = UUID.randomUUID().toString();
     Calendar calendar = Calendar.getInstance();
+    // data_access_tokens.CREATION and EXPIRATION are datetime columns, which do not
+    // store fractional seconds.
+    calendar.set(Calendar.MILLISECOND, 0);
     Date creationDate = calendar.getTime();
     calendar.add(Calendar.SECOND, 1000);
     Date expirationDate = calendar.getTime();

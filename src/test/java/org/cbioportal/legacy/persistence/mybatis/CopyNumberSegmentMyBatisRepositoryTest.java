@@ -188,16 +188,14 @@ public class CopyNumberSegmentMyBatisRepositoryTest {
             studyIds, sampleIds, "3", "SUMMARY");
 
     Assert.assertEquals(3, result0.size());
-    Assert.assertEquals("TCGA-A1-A0SB-01", result0.get(0).getSampleStableId());
-    Assert.assertEquals("TCGA-A1-A0SB-01", result0.get(1).getSampleStableId());
-    Assert.assertEquals("TCGA-A1-B0SO-01", result0.get(2).getSampleStableId());
+    Assert.assertEquals(
+        List.of("TCGA-A1-A0SB-01", "TCGA-A1-A0SB-01", "TCGA-A1-B0SO-01"), sampleStableIds(result0));
 
     Assert.assertEquals(1, result1.size());
     Assert.assertEquals("TCGA-A1-A0SB-01", result1.get(0).getSampleStableId());
 
     Assert.assertEquals(2, result2.size());
-    Assert.assertEquals("TCGA-A1-A0SB-01", result2.get(0).getSampleStableId());
-    Assert.assertEquals("TCGA-A1-B0SO-01", result2.get(1).getSampleStableId());
+    Assert.assertEquals(List.of("TCGA-A1-A0SB-01", "TCGA-A1-B0SO-01"), sampleStableIds(result2));
 
     Assert.assertEquals(0, result3.size());
   }
@@ -256,5 +254,10 @@ public class CopyNumberSegmentMyBatisRepositoryTest {
     Assert.assertEquals(0, result1.size());
 
     Assert.assertEquals(1, result2.size());
+  }
+
+  /** SUMMARY queries do not specify an ORDER BY, so compare sample ids independent of row order. */
+  private static List<String> sampleStableIds(List<CopyNumberSeg> segments) {
+    return segments.stream().map(CopyNumberSeg::getSampleStableId).sorted().toList();
   }
 }

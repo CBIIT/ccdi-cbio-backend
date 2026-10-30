@@ -98,7 +98,7 @@ services:
       - "8080:8080"
     environment:
       JAVA_OPTS: >
-        -Djdbc.driverClassName=com.mysql.jdbc.Driver
+        -Djdbc.driverClassName=com.mysql.cj.jdbc.Driver
         -Djdbc.url=jdbc:mysql://oncokb-mysql:3306/oncokb?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
         -Djdbc.username=oncokb_user
         -Djdbc.password=somepassword

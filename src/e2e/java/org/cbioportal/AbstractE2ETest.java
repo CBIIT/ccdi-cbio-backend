@@ -1,6 +1,7 @@
 package org.cbioportal;
 
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -8,6 +9,7 @@ import org.springframework.test.context.DynamicPropertySource;
 
 @ActiveProfiles("clickhouse")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestRestTemplate
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractE2ETest {
 
@@ -17,7 +19,7 @@ public abstract class AbstractE2ETest {
 
     public static final String MYSQL_URL = "jdbc:mysql://rfc80db.cbioportal.org:3306/cgds_public_2025_06_24?zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true";
     public static final String MYSQL_USERNAME = "cgds_user";
-    public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    public static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {

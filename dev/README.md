@@ -50,7 +50,7 @@ spring.datasource.url=jdbc:mysql://localhost:3306/cbioportal?useSSL=false&allowP
 spring.datasource.username=cbio_user
 spring.datasource.password=somepassword
 spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect
-spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 ```
 
 4. Start cBioPortal application on port 8080. The login credentials are `testuser:P@assword1`.

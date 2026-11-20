@@ -8,7 +8,7 @@ This page describes the main properties within application.properties. Note that
 db.user=
 db.password=
 db.connection_string=
-db.driver=[this is the name of your JDBC driver, e.g., com.mysql.jdbc.Driver]
+db.driver=[this is the name of your JDBC driver, e.g., com.mysql.cj.jdbc.Driver]
 ```
 
 The format of the `db.connection_string` is:

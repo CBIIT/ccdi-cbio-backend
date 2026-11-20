@@ -1,14 +1,14 @@
 package org.cbioportal;
 
 import org.cbioportal.config.MybatisTestConfiguration;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+import org.springframework.boot.jdbc.test.autoconfigure.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
-@DataJpaTest
+@JdbcTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("clickhouse")
 @Import(MybatisTestConfiguration.class)
@@ -20,7 +20,7 @@ public abstract class AbstractClickhouseIntegrationTest {
 
     public static final String MYSQL_URL = "jdbc:mysql://rfc80db.cbioportal.org:3306/cgds_public_2025_06_24?zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true";
     public static final String MYSQL_USERNAME = "cgds_user";
-    public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    public static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     @DynamicPropertySource
     static void registerClickHouseProperties(DynamicPropertyRegistry registry) {
